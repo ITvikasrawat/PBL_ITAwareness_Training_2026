@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Training & Assessment - PBL Connect</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* =========================================
+           1. DESKTOP BASE STYLES & VARIABLES
+        ========================================= */
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --surface-color: #ffffff;
+            --bg-light: #f8f9fa;
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            --border-color: #e1e4e8;
+            --bad-color: #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-light); color: var(--text-dark); padding-top: 80px; }
+        .container { max-width: 850px; margin: 0 auto; padding-bottom: 40px; }
+
+        /* HEADER */
+        .header { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.05); z-index: 10000; display: flex; align-items: center; justify-content: center; }
+        .logo { font-size: 1.8em; font-weight: 900; color: #1e3a8a; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo i { color: #1e3a8a; }
+        .logo-text-connect { color: #2575fc; }
+
+        /* FLOATING TIMER */
+        .floating-timer { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; border-radius: 50%; background: white; box-shadow: 0 8px 20px rgba(0,0,0,0.2); z-index: 9998; display: flex; align-items: center; justify-content: center; transform: scale(0); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .floating-timer.active { transform: scale(1); }
+        .timer-svg { transform: rotate(-90deg); }
+        .timer-circle-bg { fill: none; stroke: #f0f0f0; stroke-width: 5; }
+        .timer-circle-fg { fill: none; stroke: #2ecc71; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 201; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear, stroke 0.3s ease; }
+        .timer-text-content { position: absolute; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        #timerValue { font-weight: 800; font-size: 0.9em; color: #2c3e50; font-family: 'Courier New', monospace; }
+        .floating-timer.critical .timer-circle-fg { stroke: var(--bad-color); }
+        .floating-timer.critical { animation: heartbeat 1s infinite; box-shadow: 0 0 15px rgba(231, 76, 60, 0.6); }
+        @keyframes heartbeat { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* HERO SECTION */
+        .training-hero { padding: 40px 30px; text-align: center; color: #fff; background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); border-radius: 25px; margin: 25px auto 30px; box-shadow: 0 10px 30px rgba(0,0,0,.2); position: relative; overflow: hidden; width: 95%; }
+        .training-hero h1 { font-size: 2.2em; font-weight: 800; margin-bottom: 10px; }
+        .compliance-badge { background: rgba(255,255,255,0.25); padding: 5px 15px; border-radius: 50px; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; display: inline-block; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.4); }
+
+        /* CARDS & Z-INDEX */
+        .identity-card, .material-card, .quiz-card { background: var(--surface-color); border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin: 0 auto 30px; width: 95%; position: relative; }
+        .identity-card { z-index: 50; border: 1px solid var(--border-color); }
+        .material-card { z-index: 10; }
+        .quiz-card { z-index: 5; }
+
+        /* LOCATION TOGGLE SWITCH */
+        .location-switch { display: flex; background: #f1f5f9; border-radius: 12px; padding: 5px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .loc-btn { flex: 1; text-align: center; padding: 12px; font-size: 0.95em; font-weight: 800; color: #64748b; cursor: pointer; border-radius: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .loc-btn.active { background: #fff; color: var(--secondary-color); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .loc-btn i { margin-right: 5px; }
+        
+        /* DROPDOWN */
+        .dropdown-wrapper { position: relative; }
+        .dropdown-list { position: absolute; top: 105%; left: 0; width: 100%; background: var(--surface-color); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 9999; max-height: 250px; overflow-y: auto; display: none; border: 1px solid var(--border-color); }
+        .dropdown-list.active { display: block; }
+        .dropdown-item { padding: 12px 18px; cursor: pointer; border-bottom: 1px solid var(--border-color); font-size: 0.9em; font-weight: 600; color: var(--text-dark); }
+        .dropdown-item:hover, .dropdown-item.focused { background-color: var(--secondary-color); color: #fff; }
+        .input-box { width: 100%; padding: 15px; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-light); color: var(--text-dark); font-size: 1em; font-weight: 500; outline: none; transition: 0.3s; }
+        .input-box:focus { border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1); }
+        .input-box:disabled { cursor: not-allowed; background: #e2e8f0; opacity: 0.7; }
+        .user-info-display { background: rgba(46, 204, 113, 0.1); color: #27ae60; padding: 10px 15px; border-radius: 8px; border: 1px solid #27ae60; font-weight: 700; margin-top: 15px; display: none; }
+        
+        /* Completed User Style */
+        .dropdown-item.completed { color: #bdc3c7; background-color: #f9f9f9; cursor: not-allowed; pointer-events: none; display: flex; justify-content: space-between; font-style: italic; }
+        .dropdown-item.completed::after { content: '✅ Done'; font-size: 0.8em; color: #27ae60; font-weight: bold; }
+
+        /* STUDY MATERIAL */
+        .study-grid-layout { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
+        .study-card { background: #f8f9fa; border-radius: 12px; padding: 20px; border: 1px solid #e1e4e8; border-left-width: 5px; border-left-style: solid; transition: transform 0.2s ease; }
+        .study-card:hover { transform: translateY(-3px); background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .study-title { font-size: 1.1em; font-weight: 800; color: #2c3e50; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; padding-bottom: 8px; border-bottom: 1px dashed #ddd; }
+        .study-content ul { padding-left: 20px; margin: 0; font-weight: 500; color: #555; }
+        .study-content li { margin-bottom: 8px; line-height: 1.5; }
+
+        /* QUESTIONS & ORIGINAL SWIPE RADIO */
+        .question-block { margin-bottom: 25px; padding: 20px; background: var(--bg-light); border-radius: 15px; border: 1px solid var(--border-color); }
+        .q-number { color: var(--secondary-color); font-weight: 800; font-size: 0.8em; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .q-text { font-size: 1.05em; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; line-height: 1.4; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .option-label { display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: #fff; border: 2px solid var(--border-color); border-radius: 12px; cursor: pointer; transition: all 0.3s ease; margin-bottom: 10px; }
+        .option-label:hover { background: var(--surface-color); border-color: #beddd0; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .option-label:has(input:checked) { border-color: #2dc38c; background: #f0fdf4; }
+        
+        .swipe-container { display: block; position: relative; cursor: pointer; font-size: 20px; user-select: none; border: 3px solid #beddd0; border-radius: 10px; overflow: hidden; width: 1.3em; height: 1.3em; flex-shrink: 0; background: white; }
+        .swipe-container input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .swipe-checkmark { position: relative; top: 0; left: 0; height: 1.3em; width: 1.3em; background-color: #2dc38c; border-bottom: 1.5px solid #2dc38c; box-shadow: 0 0 1px #cef1e4, inset 0 -2.5px 3px #62eab8, inset 0 3px 3px rgba(0, 0, 0, 0.34); border-radius: 8px; transition: transform 0.3s ease-in-out; transform: translateY(-40px); }
+        .swipe-container .swipe-checkmark:before { content: ""; position: absolute; left: 9px; top: 3px; width: 5px; height: 10px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); box-shadow: 0 4px 2px rgba(0, 0, 0, 0.34); }
+        .swipe-container input:checked ~ .swipe-checkmark { animation: wipeDown 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .swipe-container input:not(:checked) ~ .swipe-checkmark { animation: wipeUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes wipeDown { 0% { transform: translateY(-40px); } 100% { transform: translateY(0); } }
+        @keyframes wipeUp { 0% { transform: translateY(0); } 100% { transform: translateY(-40px); } }
+        .option-text { font-size: 0.95em; font-weight: 600; color: var(--text-dark); line-height: 1.4; }
+
+        /* DECLARATION */
+        .declaration-box { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e4e8; margin-bottom: 20px; display: flex; gap: 15px; align-items: flex-start; transition: all 0.3s ease; }
+        .declaration-text { font-size: 0.9em; color: var(--text-dark); line-height: 1.5; font-weight: 500; }
+        .decl-checkbox { width: 20px; height: 20px; cursor: pointer; accent-color: var(--secondary-color); margin-top: 3px; }
+
+        /* DESKTOP SUBMIT */
+        .desktop-submit-wrapper { padding: 0 15px; }
+        .submit-btn { width: 100%; padding: 18px; border-radius: 50px; border: none; background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: #fff; font-size: 1.2em; font-weight: 700; cursor: pointer; box-shadow: 0 8px 20px rgba(37, 117, 252, 0.3); transition: 0.3s; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 117, 252, 0.4); }
+        .submit-btn:disabled { background: #95a5a6; box-shadow: none; cursor: not-allowed; transform: none; }
+
+        /* RESULT OVERLAY */
+        .result-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .result-card-modern { background: rgba(255, 255, 255, 0.95); padding: 0; border-radius: 30px; width: 90%; max-width: 420px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; animation: cardPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .result-header { padding: 30px 20px 60px; color: white; position: relative; }
+        .result-header.pass-bg { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .result-header.fail-bg { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .result-icon-circle { width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; left: 50%; bottom: -50px; transform: translateX(-50%); box-shadow: 0 10px 20px rgba(0,0,0,0.1); font-size: 3em; }
+        .result-body { padding: 60px 30px 30px; }
+        .score-display { font-size: 3.5em; font-weight: 900; line-height: 1; margin: 10px 0 5px; letter-spacing: -2px; }
+        .score-total { font-size: 1em; color: #888; font-weight: 700; text-transform: uppercase; }
+        .result-title { font-size: 1.8em; font-weight: 800; margin-bottom: 5px; }
+        .result-desc { font-size: 1em; color: #666; font-weight: 500; margin-bottom: 25px; line-height: 1.5; }
+        
+        /* Feedback Stars */
+        .feedback-section { margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ddd; position: relative; z-index: 2000; }
+        .feedback-title { font-size: 0.9em; color: #888; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
+        .star-rating { display: flex; justify-content: center; gap: 8px; flex-direction: row-reverse; position: relative; }
+        .star-rating input { position: absolute; opacity: 0; width: 0; height: 0; cursor: pointer; }
+        .star-rating label { font-size: 2.5em; color: #e0e0e0; cursor: pointer; transition: all 0.2s; position: relative; z-index: 2001; pointer-events: auto; line-height: 1; }
+        .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #f1c40f; transform: scale(1.1); }
+
+        /* TOAST NOTIFICATION */
+        .modern-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #fff; padding: 14px 25px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 12px; z-index: 11000; opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); min-width: 300px; border-left: 5px solid var(--bad-color); }
+        .modern-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .modern-toast i { font-size: 1.2em; color: var(--bad-color); }
+        .modern-toast span { font-weight: 700; color: #2c3e50; font-size: 0.95em; }
+
+        .footer { text-align: center; padding: 20px 0 40px; color: #888; font-size: 0.8em; line-height: 1.6; font-weight: 500; }
+
+        @keyframes cardPop { from { transform: scale(0.8) translateY(50px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+        /* =========================================
+           2. MOBILE VIEW
+        ========================================= */
+        @media (max-width: 768px) {
+            body { background-color: var(--bg-light); background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px); background-size: 25px 25px; padding-top: 75px; padding-bottom: 110px; }
+            .container { padding: 0; max-width: 100%; }
+
+            .header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); border-radius: 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+
+            .training-hero { background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%); border-radius: 2rem; padding: 30px 20px; box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.3); margin-top: 10px; text-align: left; overflow: hidden; }
+            .training-hero::after { content: '\f19d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -15px; bottom: -20px; font-size: 8rem; opacity: 0.1; color: white; transform: rotate(-15deg); }
+            .training-hero h1 { font-size: 1.7em; font-weight: 900; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 8px; }
+            .compliance-badge { background: rgba(0,0,0,0.2); backdrop-filter: blur(5px); font-size: 0.65em; padding: 5px 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; }
+
+            .identity-card, .material-card, .quiz-card { background: white; border-radius: 1.5rem; padding: 22px 18px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; margin-bottom: 15px; }
+            .identity-card h3, .material-card h3, .quiz-card h3 { font-size: 1.2em; font-weight: 900; letter-spacing: -0.5px; color: #0f172a !important; margin-bottom: 15px !important; }
+
+            .input-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 16px 15px; font-weight: 700; color: #334155; }
+            .dropdown-list { border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+            .study-grid-layout { display: block; position: relative; padding-left: 20px; margin-top: 20px; gap: 0; }
+            .study-grid-layout::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 2px; background: #e2e8f0; border-radius: 10px; }
+            .study-card { background: #f8fafc; border-radius: 1.2rem; border: 1px solid #f1f5f9; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); margin-bottom: 15px; padding: 15px; border-left: 1px solid #f1f5f9 !important; position: relative; transform: none !important; }
+            .study-card::before { content: ''; position: absolute; left: -25px; top: 15px; width: 14px; height: 14px; border-radius: 50%; background: white; border: 3px solid #3b82f6; z-index: 10; }
+            .study-card:nth-child(2)::before { border-color: #8b5cf6; }
+            .study-card:nth-child(3)::before { border-color: #e11d48; } 
+            .study-title { border-bottom: none; padding-bottom: 0; font-size: 1em; font-weight: 900; }
+            .study-content li { font-size: 0.85em; margin-bottom: 6px; }
+
+            .question-block { background: transparent; border: none; padding: 0 0 20px 0; margin-bottom: 20px; border-bottom: 1px dashed #e2e8f0; border-radius: 0; }
+            .q-number { background: #eff6ff; color: #4f46e5 !important; padding: 4px 10px; border-radius: 8px; font-size: 0.65em; font-weight: 900; letter-spacing: 0.5px; display: inline-block; margin-bottom: 10px; }
+            .q-text { font-size: 1.05em; font-weight: 800; line-height: 1.4; color: #0f172a; margin-bottom: 15px; }
+            
+            .options-grid { grid-template-columns: 1fr; gap: 8px; }
+            .option-label { padding: 12px 15px; border-radius: 1rem; background: #ffffff; border: 1px solid #e2e8f0; margin-bottom: 0; }
+            .option-label:has(input:checked) { background: #f0fdf4; border-color: #10b981; transform: scale(0.98); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.1); }
+            .swipe-container { transform: scale(0.85); margin-right: -5px; }
+
+            .desktop-submit-wrapper { display: none; } 
+            .quiz-card::after { content: ''; display: block; height: 10px; } 
+            
+            .submit-btn.mobile-sticky { position: fixed; bottom: 20px; left: 15px; right: 15px; width: calc(100% - 30px); z-index: 9000; padding: 18px; border-radius: 1.5rem; background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%); font-weight: 900; font-size: 1.1em; letter-spacing: 0.5px; text-transform: uppercase; box-shadow: 0 15px 30px -5px rgba(79, 70, 229, 0.4); margin: 0; display: flex; }
+
+            .declaration-box { margin-bottom: 0; padding: 15px; border-radius: 1rem; background: #fffbeb; border: 1px dashed #fcd34d; align-items: flex-start; }
+            .declaration-text { font-size: 0.85em; font-weight: 600; }
+
+            .floating-timer { bottom: 95px; right: 15px; width: auto; height: auto; padding: 8px 15px; border-radius: 1rem; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.1); flex-direction: row; gap: 8px; z-index: 8900; }
+            .timer-svg { display: none; }
+            .floating-timer::before { content: '\f017'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #4f46e5; font-size: 1.1em; }
+            .timer-text-content { position: relative; transform: none; top: auto; left: auto; }
+            #timerValue { font-size: 1em; font-weight: 900; color: #0f172a; letter-spacing: 1px; }
+            .floating-timer.critical { background: #fff1f2; border: 1px solid #fda4af; animation: heartbeat 1s infinite; }
+            .floating-timer.critical::before, .floating-timer.critical #timerValue { color: #e11d48; }
+
+            .modern-toast { min-width: 90%; bottom: 95px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 1rem; border-left: none; box-shadow: 0 20px 40px rgba(0,0,0,0.2); padding: 15px 20px; }
+            .modern-toast span { color: white; font-size: 0.85em; }
+            .modern-toast i { color: #38bdf8; }
+
+            .result-card-modern { width: 92%; max-width: none; border-radius: 2rem; }
+            .score-display { font-size: 3.5em; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="#" class="logo">
+            <i class="fa-solid fa-circle-nodes"></i> PBL <span class="logo-text-connect">Connect</span>
+        </a>
+    </header>
+
+    <div id="floatingTimer" class="floating-timer">
+        <svg class="timer-svg" width="70" height="70">
+            <circle class="timer-circle-bg" cx="35" cy="35" r="32"></circle>
+            <circle id="timerProgress" class="timer-circle-fg" cx="35" cy="35" r="32"></circle>
+        </svg>
+        <div class="timer-text-content">
+            <span id="timerValue">02:30</span>
+        </div>
+    </div>
+
+    <div id="modernToast" class="modern-toast">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="toastMessage">Something went wrong</span>
+    </div>
+
+    <main class="container">
+        
+        <div class="training-hero">
+            <span class="compliance-badge">Essential Annual Training</span>
+            <h1><i class="fas fa-graduation-cap"></i> The 2026 Policy Awareness Program</h1>
+            <p style="font-weight: 500;">IT Security, GDPR Data Privacy & POSH Awareness.</p>
+        </div>
+
+        <!-- Step 1: Identity -->
+        <div class="identity-card">
+            <h3><i class="fas fa-id-card"></i> Step 1: Identify Yourself</h3>
+            
+            <!-- ✅ LOCATION TOGGLE SWITCH -->
+            <div class="location-switch">
+                <div class="loc-btn active" id="btnNoida" onclick="setLocation('Noida')"><i class="fas fa-building"></i> Noida</div>
+                <div class="loc-btn" id="btnDehradun" onclick="setLocation('Dehradun')"><i class="fas fa-map-marker-alt"></i> Dehradun</div>
+            </div>
+
+            <div style="margin-bottom:0;">
+                <label style="font-weight:700; font-size:0.9em; display:block; margin-bottom:8px; color:var(--text-light);">Select Your Name <span style="color:#e74c3c">*</span></label>
+                <div class="dropdown-wrapper">
+                    <input type="text" id="searchBox" class="input-box" placeholder="Loading database... ⏳" autocomplete="off" disabled>
+                    <div id="dropdown" class="dropdown-list"></div>
+                </div>
+                <div id="userInfoDisplay" class="user-info-display"></div>
+            </div>
+        </div>
+
+        <!-- Step 2: Guidelines -->
+        <div class="material-card">
+            <h3><i class="fas fa-book-open" style="color:#0ea5e9;"></i> Step 2: Review Guidelines</h3>
+            <p style="margin:0; color:var(--text-light); font-size:0.95em; font-weight:600;">Please read these points carefully. The quiz is based on this.</p>
+            
+            <div class="study-grid-layout">
+                <div class="study-card" style="border-left-color: #3498db;">
+                    <div class="study-title" style="color: #2980b9;"><i class="fas fa-shield-alt"></i> 1. IT Security Basics</div>
+                    <div class="study-content">
+                        <ul>
+                            <li><strong>Passwords:</strong> Use strong passwords (8+ chars). Never share them.</li>
+                            <li><strong>Lock Screen:</strong> Press <strong>Windows + L</strong> every time you leave your seat.</li>
+                            <li><strong>Phishing:</strong> Don't click suspicious links or download attachments.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="study-card" style="border-left-color: #9b59b6;">
+                    <div class="study-title" style="color: #8e44ad;"><i class="fas fa-database"></i> 2. Data Privacy</div>
+                    <div class="study-content">
+                        <ul>
+                            <li><strong>Storage:</strong> Save files only on the Server/OneDrive.</li>
+                            <li><strong>Confidentiality:</strong> Never share client data on WhatsApp/personal email.</li>
+                            <li><strong>Clean Desk:</strong> Do not leave sensitive papers open on your desk.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="study-card" style="border-left-color: #e74c3c;">
+                    <div class="study-title" style="color: #c0392b;"><i class="fas fa-users"></i> 3. Workplace Conduct</div>
+                    <div class="study-content">
+                        <ul>
+                            <li><strong>POSH:</strong> Zero tolerance for harassment. Report incidents to HR/IC immediately.</li>
+                            <li><strong>Respect:</strong> Maintain professionalism in all communications.</li>
+                            <li><strong>Behavior:</strong> Avoid inappropriate jokes or comments.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Quiz -->
+        <div class="quiz-card">
+            <h3>Step 3: Test Your Understanding</h3>
+            <p style="margin:0 0 20px 0; color:var(--text-light); font-size:0.9em; font-weight:700;">Passing Score: 7/10</p>
+            
+            <form id="trainingForm">
+                <div class="question-block"><span class="q-number">Question 1 / 10 (IT Security)</span><p class="q-text">What is the most secure way to create a password?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q1" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Use your name & birth year</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q1" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Use 'Password@123'</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q1" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. Mix of Upper, Lower, Numbers & Symbols</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q1" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. Write it on a sticky note</span></label></div></div>
+                <div class="question-block"><span class="q-number">Question 2 / 10 (IT Security)</span><p class="q-text">What should you do if you receive a suspicious email asking for login details?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q2" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Reply with details</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q2" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Report to IT & Delete</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q2" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. Forward to everyone</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q2" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. Click the link to check</span></label></div></div>
+                <div class="question-block"><span class="q-number">Question 3 / 10 (IT Security)</span><p class="q-text">When leaving your desk, what is the mandatory action?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q3" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Turn off monitor</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q3" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Lock screen (Win + L)</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q3" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. Leave it open</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q3" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. Ask colleague to watch</span></label></div></div>
+                <div class="question-block"><span class="q-number">Question 4 / 10 (GDPR & ISO)</span><p class="q-text">According to GDPR, what is 'Personal Data'?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q4" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Only Name</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q4" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Public Company Data</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q4" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. Any info identifying a person</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q4" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. Weather data</span></label></div></div>
+                <div class="question-block"><span class="q-number">Question 5 / 10 (GDPR & ISO)</span><p class="q-text">What is the 'Clean Desk Policy'?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q5" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Cleaning dust daily</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q5" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Not eating at desk</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q5" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. Securing sensitive documents</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q5" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. Having a nice flower pot</span></label></div></div>
+                <div class="question-block"><span class="q-number">Question 6 / 10 (Data Safety)</span><p class="q-text">Where should you save official work files?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q6" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Desktop</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q6" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Personal Gmail Drive</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q6" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. USB Drive</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q6" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. Company Server</span></label></div></div>
+                <div class="question-block"><span class="q-number">Question 7 / 10 (POSH)</span><p class="q-text">What does POSH stand for?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q7" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Prevention of Sexual Harassment</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q7" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Polite Office Social Habits</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q7" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. Public Office Safety Health</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q7" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. None of the above</span></label></div></div>
+                <div class="question-block"><span class="q-number">Question 8 / 10 (POSH)</span><p class="q-text">Which of these is considered inappropriate workplace behavior?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q8" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Shaking hands</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q8" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Unwelcome jokes or comments</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q8" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. Asking for work update</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q8" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. Team lunch</span></label></div></div>
+                <div class="question-block"><span class="q-number">Question 9 / 10 (POSH)</span><p class="q-text">To whom should you report a POSH incident?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q9" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Social Media</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q9" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Internal Committee (IC) / HR</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q9" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. Friends only</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q9" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. Ignore it</span></label></div></div>
+                <div class="question-block"><span class="q-number">Question 10 / 10 (General)</span><p class="q-text">Who is responsible for Data Security at PBL?</p><div class="options-grid"><label class="option-label"><div class="swipe-container"><input type="radio" name="q10" value="A"><div class="swipe-checkmark"></div></div><span class="option-text">A. Only IT Team</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q10" value="B"><div class="swipe-checkmark"></div></div><span class="option-text">B. Only Management</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q10" value="C"><div class="swipe-checkmark"></div></div><span class="option-text">C. Every Employee</span></label><label class="option-label"><div class="swipe-container"><input type="radio" name="q10" value="D"><div class="swipe-checkmark"></div></div><span class="option-text">D. Security Guard</span></label></div></div>
+
+                <div class="declaration-box">
+                    <input type="checkbox" id="declarationCheck" class="decl-checkbox">
+                    <label for="declarationCheck" class="declaration-text">
+                        <strong>I hereby declare</strong> that I have read and understood the IT Security, Data Privacy, and POSH policies of Pan Business Lists Pvt. Ltd. I agree to abide by these guidelines.
+                    </label>
+                </div>
+
+                <div class="desktop-submit-wrapper">
+                    <button type="submit" id="submitBtnDesk" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Finish & View Score
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <button type="submit" form="trainingForm" id="submitBtnMobile" class="submit-btn mobile-sticky" style="display: none;">
+        <i class="fas fa-paper-plane"></i> Finish & View Score
+    </button>
+
+    <footer class="footer">
+        © 2026 <strong>Pan Business Lists Pvt. Ltd.</strong><br>
+        This is a private internal portal. All access is logged as per our security policies.<br>
+        <div class="project-spotlight">
+                <div class="spotlight-item"><strong>Portal Developed & Maintained by:</strong> <span>Team IT</span></div>
+                <div class="spotlight-item"><strong>Concept & Vision:</strong> <span>Vikas Rawat</span></div>
+            </div>
+    </footer>
+
+    <!-- RESULT MODAL -->
+    <div id="resultOverlay" class="result-overlay">
+        <div class="result-card-modern">
+            <div id="resultHeader" class="result-header">
+                <div id="resultIconCircle" class="result-icon-circle"><i id="resultIcon" class="fas fa-check"></i></div>
+            </div>
+            <div class="result-body">
+                <div class="score-display" style="color: #333;">
+                    <span id="finalScoreVal">0</span><span style="font-size: 0.5em;">/10</span>
+                </div>
+                <div class="score-total">Your Score</div>
+                
+                <h2 id="resultTitleText" class="result-title" style="margin-top: 15px; color: #2c3e50;">Result</h2>
+                <p id="resultDescText" class="result-desc">Description goes here.</p>
+
+                <div id="feedbackContainer" class="feedback-section" style="display:none;">
+                    <div class="feedback-title">Rate this Training</div>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                    </div>
+                </div>
+                
+                <button id="closeResultBtn" class="submit-btn" style="background: #2c3e50; margin-top: 20px;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 🔴 GOOGLE APPS SCRIPT URL
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvIkwSZ5gdIBc_GHbXXMgadnBHU19twANppiq-nK8D3cGb8B6efZLix1Cxe2FPPsqyJw/exec"; 
+        
+        // GLOBAL VARIABLES
+        let allEmployeesData = []; // Array of objects:[{name: "Name (PF)", location: "Noida"}]
+        let activeEmployeeList =[]; // Array of strings filtered by location
+        let completedUsers =[]; 
+        let currentLocation = 'Noida'; // Default location
+        
+        const ANSWERS = { q1:'C', q2:'B', q3:'B', q4:'C', q5:'C', q6:'D', q7:'A', q8:'B', q9:'B', q10:'C' };
+        const TOTAL_TIME = 2 * 60 + 30; 
+        
+        const searchBox = document.getElementById('searchBox');
+        const dropdown = document.getElementById('dropdown');
+        const userInfoDisplay = document.getElementById('userInfoDisplay');
+        const floatingTimer = document.getElementById('floatingTimer');
+        const timerProgress = document.getElementById('timerProgress');
+        const timerDisplay = document.getElementById('timerValue');
+        
+        let currentFocus = -1;
+        let timeLeft = TOTAL_TIME;
+        let timerInterval;
+        let isSubmitted = false;
+
+        if (window.innerWidth <= 768) {
+            document.getElementById('submitBtnMobile').style.display = 'flex';
+            document.getElementById('submitBtnDesk').style.display = 'none';
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('modernToast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ==========================================
+        // 🚀 LIVE DATABASE FETCH
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch(`${SCRIPT_URL}?action=getEmployeeList`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.employees) {
+                        allEmployeesData = data.employees; 
+                        completedUsers = data.completed ||[];
+                        
+                        updateLocationFilter(); // Filter for Noida by default
+                        
+                        searchBox.placeholder = "Start typing your name...";
+                        searchBox.disabled = false;
+                        console.log("✅ DB Connected. Users loaded:", allEmployeesData.length);
+                    }
+                })
+                .catch(err => {
+                    console.error("Fetch Error:", err);
+                    searchBox.placeholder = "Error loading data ❌";
+                    showToast("Failed to connect to Database!");
+                });
+        });
+
+        // ==========================================
+        // 📍 LOCATION TOGGLE LOGIC
+        // ==========================================
+        function setLocation(loc) {
+            if(isSubmitted || searchBox.disabled && searchBox.value !== '') {
+                // If user is locked in, don't allow changing location without reloading
+                showToast("Name already locked! Reload page to change location.");
+                return;
+            }
+
+            currentLocation = loc;
+            
+            // Update UI buttons
+            document.getElementById('btnNoida').classList.toggle('active', loc === 'Noida');
+            document.getElementById('btnDehradun').classList.toggle('active', loc === 'Dehradun');
+            
+            // Reset Search box
+            searchBox.value = '';
+            dropdown.classList.remove('active');
+            
+            // Update Active Array
+            updateLocationFilter();
+            showToast(`Switched to ${loc} Office Data`);
+        }
+
+        function updateLocationFilter() {
+            activeEmployeeList = allEmployeesData
+                .filter(emp => emp.location.toLowerCase() === currentLocation.toLowerCase())
+                .map(emp => emp.name);
+        }
+
+        // --- SEARCH & DROPDOWN ---
+        searchBox.addEventListener('input', function() {
+            const val = this.value.toLowerCase();
+            dropdown.innerHTML = '';
+            currentFocus = -1;
+            if(!val) { dropdown.classList.remove('active'); return; }
+            
+            // Use activeEmployeeList (filtered by location)
+            const matches = activeEmployeeList.filter(n => n.toLowerCase().includes(val));
+            
+            if(matches.length > 0) {
+                dropdown.classList.add('active');
+                matches.forEach(name => {
+                    const div = document.createElement('div'); 
+                    div.className = 'dropdown-item'; 
+                    if(completedUsers.includes(name)) {
+                        div.textContent = name;
+                        div.classList.add('completed');
+                        div.title = "Training already completed!";
+                    } else {
+                        div.textContent = name;
+                        div.onclick = () => selectUser(name); 
+                    }
+                    dropdown.appendChild(div);
+                });
+            } else { dropdown.classList.remove('active'); }
+        });
+
+        searchBox.addEventListener('keydown', function(e) {
+            let items = dropdown.getElementsByClassName('dropdown-item');
+            if (!items.length) return;
+            if (e.key === 'ArrowDown') { currentFocus++; addActive(items); } 
+            else if (e.key === 'ArrowUp') { currentFocus--; addActive(items); } 
+            else if (e.key === 'Enter') { e.preventDefault(); if (currentFocus > -1 && items[currentFocus]) items[currentFocus].click(); }
+        });
+
+        function addActive(x) {
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = x.length - 1;
+            x[currentFocus].classList.add('focused');
+            x[currentFocus].scrollIntoView({ block: 'nearest' });
+        }
+        function removeActive(x) { for (let i = 0; i < x.length; i++) x[i].classList.remove('focused'); }
+
+        function selectUser(name) {
+            searchBox.value = name;
+            dropdown.classList.remove('active');
+            userInfoDisplay.style.display = 'block';
+            userInfoDisplay.innerHTML = `<i class="fas fa-user-check"></i> Candidate Locked: ${name}`;
+            searchBox.disabled = true; searchBox.style.backgroundColor = "#e9ecef"; searchBox.style.cursor = "not-allowed";
+            startTimer(); 
+        }
+
+        document.addEventListener('click', (e) => { if (!e.target.closest('.dropdown-wrapper')) dropdown.classList.remove('active'); });
+
+        // --- RADIO UNCHECK LOGIC ---
+        document.querySelectorAll('input[type="radio"]:not([name="rating"])').forEach(radio => {
+            radio.addEventListener('click', function(e) {
+                if(isSubmitted) return; 
+                if (this.dataset.wasChecked === 'true') { 
+                    this.checked = false; 
+                    this.dataset.wasChecked = 'false'; 
+                } else { 
+                    document.querySelectorAll(`input[name="${this.name}"]`).forEach(r => r.dataset.wasChecked = 'false');
+                    this.dataset.wasChecked = 'true'; 
+                }
+            });
+        });
+
+        // --- TIMER ---
+        function startTimer() {
+            floatingTimer.classList.add('active');
+            timerInterval = setInterval(() => {
+                if(isSubmitted) { clearInterval(timerInterval); return; }
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                timerDisplay.textContent = `0${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+                if(timerProgress) {
+                    const timeFraction = timeLeft / TOTAL_TIME;
+                    timerProgress.style.strokeDashoffset = -(201 * (1 - timeFraction));
+                }
+
+                if (timeLeft <= 60) { floatingTimer.classList.add('critical'); if(timerProgress) timerProgress.style.stroke = "#e74c3c"; } 
+                if (timeLeft <= 0) { clearInterval(timerInterval); timerDisplay.textContent = "00:00"; submitQuiz(); }
+                timeLeft--;
+            }, 1000);
+        }
+
+        // --- SUBMIT ---
+        document.getElementById('trainingForm').addEventListener('submit', (e) => { e.preventDefault(); submitQuiz(); });
+
+        function submitQuiz() {
+            if(isSubmitted) return;
+            const decl = document.getElementById('declarationCheck');
+            const userName = searchBox.value;
+            
+            if(timeLeft > 0) {
+                if(!userName) { showToast("⚠️ Select your Name in Step 1 first!"); window.scrollTo({top:0, behavior:'smooth'}); return; }
+                if(!decl.checked) { 
+                    showToast("⚠️ Accept the declaration to proceed."); 
+                    decl.parentElement.style.borderColor = "#e74c3c";
+                    setTimeout(() => decl.parentElement.style.borderColor = "#e1e4e8", 2000);
+                    return; 
+                }
+            }
+
+            clearInterval(timerInterval);
+            isSubmitted = true;
+
+            const btnDesk = document.getElementById('submitBtnDesk');
+            const btnMob = document.getElementById('submitBtnMobile');[btnDesk, btnMob].forEach(btn => {
+                if(btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-lock"></i> Submitted';
+                    btn.style.background = "#95a5a6"; btn.style.cursor = "not-allowed";
+                }
+            });
+            document.querySelectorAll('input[type="radio"]:not([name="rating"])').forEach(i => i.disabled = true);
+
+            // Calc Score & Capture Answers ✅
+            let score = 0;
+            let answersArray =[]; // Naya array answer track karne ke liye
+
+            for(let i=1; i<=10; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                
+                // Agar answer diya hai to wo lo, warna 'NA' (Not Attempted)
+                const ansVal = selected ? selected.value : "NA"; 
+                answersArray.push(`Q${i}:${ansVal}`); // Result format: "Q1:C"
+
+                if(selected && selected.value === ANSWERS[`q${i}`]) score++;
+            }
+
+            // Array ko comma separated string bana lo (e.g. "Q1:C, Q2:B, Q3:NA...")
+            const finalAnswerLog = answersArray.join(", ");
+
+            const overlay = document.getElementById('resultOverlay');
+            const header = document.getElementById('resultHeader');
+            const icon = document.getElementById('resultIcon');
+            const scoreVal = document.getElementById('finalScoreVal');
+            const title = document.getElementById('resultTitleText');
+            const desc = document.getElementById('resultDescText');
+            const closeBtn = document.getElementById('closeResultBtn');
+            const feedbackContainer = document.getElementById('feedbackContainer');
+
+            scoreVal.textContent = score;
+            overlay.style.display = 'flex';
+
+            const status = score >= 7 ? "PASS" : "FAIL"; 
+            
+            if(status === "PASS") {
+                header.className = "result-header pass-bg";
+                icon.className = "fas fa-trophy"; icon.style.color = "#27ae60";
+                title.textContent = "Certified! 🎉"; title.style.color = "#27ae60";
+                desc.textContent = "Excellent! Please rate us and click 'Finish' to save.";
+                feedbackContainer.style.display = "block"; 
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, zIndex: 10001 });
+                
+                // ✅ AUTO-SAVE TIMER LOGIC (Visible Countdown)
+                let autoSaveTimer = 10;
+                closeBtn.innerHTML = `Finish & Save (${autoSaveTimer}s)`;
+                let isSaved = false;
+
+                const performSave = () => {
+                    if(isSaved) return; 
+                    isSaved = true;
+                    clearInterval(countdownInterval);
+                    
+                    const star = document.querySelector('input[name="rating"]:checked');
+                    const feedbackStr = star ? star.value + " Stars" : "5 Stars";
+                    
+                    closeBtn.innerHTML = "Saving... <i class='fas fa-spinner fa-spin'></i>";
+                    closeBtn.disabled = true;
+					
+                    // ✅ NAYA: finalAnswerLog pass kar rahe hain
+                    sendDataToGoogleSheet(userName, score, status, feedbackStr, finalAnswerLog);
+                }; // YAHAN FUNCTION KHATAM
+
+                closeBtn.onclick = performSave;
+
+                const countdownInterval = setInterval(() => {
+                    autoSaveTimer--;
+                    if(autoSaveTimer > 0 && !isSaved) {
+                        closeBtn.innerHTML = `Finish & Save (${autoSaveTimer}s)`;
+                    } else if (autoSaveTimer <= 0 && !isSaved) {
+                        performSave(); 
+                    }
+                }, 1000);
+
+            } else {
+                header.className = "result-header fail-bg";
+                icon.className = "fas fa-times"; icon.style.color = "#c0392b";
+                title.textContent = "Not Passed"; title.style.color = "#c0392b";
+                desc.textContent = "You need 7/10 to pass. Please try again.";
+                feedbackContainer.style.display = "none";
+                
+                closeBtn.innerHTML = "Saving... <i class='fas fa-spinner fa-spin'></i>";
+                closeBtn.disabled = true;
+
+                // ✅ NAYA: Fail hone par bhi answer log bhejenge, feedback "N/A"
+                sendDataToGoogleSheet(userName, score, status, "N/A", finalAnswerLog);
+            }
+        }
+
+        // ==========================================
+        // 📡 POST DATA (WITH DYNAMIC URL AUTO-DETECT) 🌍
+        // ==========================================
+        function sendDataToGoogleSheet(name, score, status, rating, answerLog) {
+            
+            // 🧠 MAGIC LOGIC: Auto-detect current domain/path
+            let currentPath = window.location.href.split('?')[0]; // Current page URL
+            let auditUrl = currentPath.replace('user-training.html', 'view-result.html');
+
+            const payload = {
+                formType: 'training_result',
+                FullName: name,        
+                Score: "'" + score + "/10",  
+                Status: status,        
+                Feedback: rating,
+                UserResponses: answerLog,
+                HostURL: auditUrl // ✅ NAYA: Frontend khud apna address bhej raha hai
+            };
+            
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                showToast("Data Saved Successfully!");
+                setTimeout(() => location.reload(), 1500);
+            }).catch(e => {
+                console.error("Save Error:", e);
+                showToast("Network issue while saving!");
+                setTimeout(() => location.reload(), 2000);
+            });
+        }
+    </script>
+</body>
+</html>
