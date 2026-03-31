@@ -92,27 +92,32 @@
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
 
         /* =======================================================
-           FIX 1: FOOTER FIXED AT ABSOLUTE BOTTOM (NO CLASHING)
+           FIX 1: FOOTER ENLARGED (BIGGER HEIGHT & FONT SIZE)
            ======================================================= */
         .branding-footer {
             position: fixed; bottom: 0; left: 0; right: 0;
-            height: 40px; z-index: 10000;
-            font-size: 12px; color: #2d3436;
+            height: 65px; /* Increased Height */
+            z-index: 10000;
+            font-size: 18px; /* Increased Font Size */
+            color: #2d3436;
             display: flex; justify-content: space-between; align-items: center;
-            background: #ffffff; padding: 0 25px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            border-top: 2px solid var(--primary-blue);
+            background: #ffffff; padding: 0 40px; /* Increased Side Padding */
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.08); /* Slightly stronger shadow */
+            border-top: 4px solid var(--primary-blue); /* Thicker border */
             box-sizing: border-box;
         }
         .branding-footer a { color: var(--primary-blue); text-decoration: none; font-weight: bold;}
         
         .iso-badge {
             background: linear-gradient(135deg, #0984e3, #6c5ce7); color: white;
-            padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: bold;
+            padding: 8px 20px; /* Bigger padding */
+            border-radius: 20px; 
+            font-size: 15px; /* Bigger font size */
+            font-weight: bold;
         }
 
         /* =======================================================
-           FIX 2: SLIDE NUMBER MOVED TO TOP-RIGHT
+           FIX 2: SLIDE NUMBER AT TOP-RIGHT
            ======================================================= */
         .reveal .slide-number {
             top: 15px !important; bottom: auto !important; right: 15px !important;
@@ -124,7 +129,7 @@
         }
 
         /* Prevent Controls from touching footer */
-        .reveal .controls { bottom: 50px !important; z-index: 9999 !important; }
+        .reveal .controls { bottom: 80px !important; z-index: 9999 !important; }
 
         /* Client Alert / GDP-207 Banner */
         .client-alert {
@@ -153,7 +158,7 @@
 </head>
 <body>
 
-    <!-- Fixed Bottom Bar Footer -->
+    <!-- Fixed Bottom Bar Footer (Bada Footer) -->
     <div class="branding-footer">
         <div>🏢 <strong>Pan Business Lists Pvt. Ltd.</strong> | IT Department (Vikas Rawat)</div>
         <div style="display: flex; align-items: center; gap: 15px;">
@@ -165,7 +170,7 @@
     <div class="reveal">
         <div class="slides">
 
-            <!-- Title Slide (Shifted UP using negative margin) -->
+            <!-- Title Slide -->
             <section data-transition="zoom">
                 <div class="modern-card" style="text-align: center; padding: 25px 35px; border-left: none; border-top: 8px solid var(--primary-blue); margin-top: -30px;">
                     <img src="https://cdn-icons-png.flaticon.com/512/2716/2716652.png" alt="Security" style="width: 65px; margin-bottom: 10px;">
@@ -177,7 +182,6 @@
                     </div>
                     
                     <div class="client-alert" style="margin-top: 20px; justify-content: center; text-align: left;">
-                        <!-- FIX: Replaced Emoji with High Quality Image -->
                         <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="Germany" style="width: 45px; margin-right: 15px; border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                         <div>
                             <strong style="color: var(--accent-red); font-size: 1.05em;">SPECIAL FOCUS: PROJECT GDP-207 (GERMAN CLIENT)</strong><br>
@@ -188,7 +192,7 @@
                 <div style="text-align: right; width: 100%;"><div class="nav-hint-right">Press RIGHT Arrow (➡️) to Start</div></div>
             </section>
 
-            <!-- Agenda Slide (Compressed and Shifted Up) -->
+            <!-- Agenda Slide -->
             <section data-transition="slide">
                 <div style="margin-top: -20px;">
                     <h2>📋 Training Agenda (6 Pillars)</h2>
@@ -216,7 +220,6 @@
                             <p>Auditor ko kaise answer karein, aur 72-Hour Breach Rule.</p>
                         </div>
                         <div class="modern-card card-german agenda-card" style="box-shadow: 0 0 15px rgba(255, 206, 0, 0.2);">
-                            <!-- FIX: Replaced DE with Image -->
                             <h3 style="color: #d35400;"><img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" style="width: 20px; vertical-align: middle; margin-right: 5px;"> 6. GDP-207 & GDPR</h3>
                             <p>German project ke eToken (OTP) rules aur European Privacy Laws.</p>
                         </div>
@@ -438,7 +441,6 @@
             <section>
                 <section data-background-image="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" data-background-opacity="0.1" data-transition="zoom">
                     <div class="image-bg-section" style="border-left: 10px solid var(--german-gold);">
-                        <!-- FIX: Replaced DE text with German Flag Image -->
                         <h2><img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="Germany" style="width: 40px; vertical-align: middle; margin-right: 10px; border-radius: 3px; margin-bottom: 5px;"> Pillar 6: Project GDP-207 & GDPR</h2>
                         <p style="font-size: 1.05em; color: #636e72;">German Client Visit ke liye sabse Critical Guidelines.</p>
                     </div>
@@ -468,7 +470,6 @@
                     <div class="grid-2">
                         <div class="modern-card card-green">
                             <div class="point-item">
-                                <!-- Replaced EU emoji with Image -->
                                 <span class="point-num" style="background: #0f4b9b;"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" style="width:16px;"></span> 
                                 <div>
                                     <span class="emoji-icon">🎯</span> <strong>Data Minimization:</strong> Sirf utna hi personal data extract/process karein jitna task ke liye zaroori ho. Faltu data extract na karein.
@@ -487,29 +488,29 @@
                 </section>
             </section>
 
-            <!-- SECTION 7: Audit Roleplay (COMPRESSED TO FIT 1280x1024) -->
+            <!-- SECTION 7: Audit Roleplay -->
             <section data-transition="zoom">
                 <h2 style="margin-bottom: 5px;">🎭 Audit Roleplay (Mock Interview)</h2>
                 <p style="margin-bottom: 12px; font-size: 0.85em; color: #636e72;">German Auditor aakar aapse achanak yeh sawaal puchh sakta hai. Sochiye aap kya jawab denge?</p>
                 
-                <div class="modern-card card-purple" style="padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.1);">
+                <div class="modern-card card-purple" style="padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.1);">
                     <h3 style="color: var(--accent-purple); margin-bottom: 3px; font-size: 1.05em;">Q1: "What will you do if you find an unknown USB drive in the cafeteria?"</h3>
                     <p class="fragment" style="margin: 0; color: var(--accent-green); font-weight: bold; font-size: 0.85em;">✔️ Answer: I will NOT plug it into my computer. I will hand it over to the IT Department immediately.</p>
                 </div>
 
-                <div class="modern-card card-purple" style="padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.1);">
+                <div class="modern-card card-purple" style="padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.1);">
                     <h3 style="color: var(--accent-purple); margin-bottom: 3px; font-size: 1.05em;">Q2: "Where do you write your passwords?"</h3>
                     <p class="fragment" style="margin: 0; color: var(--accent-green); font-weight: bold; font-size: 0.85em;">✔️ Answer: I do not write them anywhere. I memorize them and use MFA.</p>
                 </div>
 
-                <div class="modern-card card-purple" style="padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.1);">
+                <div class="modern-card card-purple" style="padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.1);">
                     <h3 style="color: var(--accent-purple); margin-bottom: 3px; font-size: 1.05em;">Q3: "How do you login to the GDP-207 portal?"</h3>
                     <p class="fragment" style="margin: 0; color: var(--accent-green); font-weight: bold; font-size: 0.85em;">✔️ Answer: Using the approved URL and my personal eToken (OTP), which I never share.</p>
                 </div>
                 <div style="text-align: right; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Final Summary</div></div>
             </section>
 
-            <!-- Conclusion & QA & QUIZ (COMPRESSED) -->
+            <!-- Conclusion & QA & QUIZ -->
             <section data-transition="zoom" style="text-align: center;">
                 <img src="https://cdn-icons-png.flaticon.com/512/1904/1904425.png" alt="Success" style="width: 60px; margin-bottom: 5px;">
                 <h1 style="font-size: 1.8em; margin-bottom: 5px; color: var(--accent-green);">Let's Make the Audit a Success! 🏆</h1>
@@ -534,22 +535,20 @@
         </div>
     </div>
 
-    <!-- Reveal.js Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
     <script>
         Reveal.initialize({
             width: 1280,
             height: 1024,
             
-            // Margin allows space around the slides so they NEVER touch the absolute footer
-            margin: 0.06, 
+            // Adjusted margin slightly up to ensure bottom clearance
+            margin: 0.08, 
             minScale: 0.2,
             maxScale: 2.0,
 
-            // Forces navigation arrows to stay on the LEFT and RIGHT middle edges.
             controls: true, 
             controlsLayout: 'edges', 
-            controlsBackArrows: 'visible', // Keeps left arrow visible when navigating
+            controlsBackArrows: 'visible',
 
             progress: true,
             center: true,
