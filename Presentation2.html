@@ -30,7 +30,7 @@
             font-family: 'Poppins', sans-serif;
             color: var(--dark-text);
             margin: 0; padding: 0;
-            overflow: hidden; /* Stops any unwanted scrollbars */
+            overflow: hidden;
         }
 
         .reveal .slides { text-align: left; }
@@ -40,12 +40,11 @@
             font-weight: 700; text-transform: none; color: var(--dark-text);
         }
 
-        /* Adjusted Font Sizes for 1280x1024 */
         .reveal h1 { color: var(--primary-blue); font-size: 2.3em; text-shadow: 2px 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
         .reveal h2 { color: var(--accent-purple); font-size: 1.6em; border-bottom: 3px solid var(--primary-blue); display: inline-block; padding-bottom: 5px; margin-bottom: 20px;}
         .reveal h3 { color: var(--primary-blue); font-size: 1.1em; margin-bottom: 10px; font-weight: 600;}
 
-        /* Modern Cards - Compressed Paddings to fit screen better */
+        /* Modern Cards */
         .modern-card {
             background: #ffffff;
             border-radius: 12px;
@@ -63,7 +62,6 @@
         .card-german { border-left-color: var(--german-gold); background: linear-gradient(to right, #ffffff, #fffdf5); }
         .card-purple { border-left-color: var(--accent-purple); }
 
-        /* Specific fix for Agenda Cards to not overflow */
         .agenda-card h3 { font-size: 1.05em; margin-bottom: 8px; }
         .agenda-card p { font-size: 0.7em; margin: 0; line-height: 1.4; }
 
@@ -87,38 +85,29 @@
         .alert { color: var(--accent-red); font-weight: bold; background: rgba(214, 48, 49, 0.1); padding: 2px 6px; border-radius: 4px;}
         .success { color: var(--accent-green); font-weight: bold; background: rgba(0, 184, 148, 0.1); padding: 2px 6px; border-radius: 4px;}
 
-        /* Grids */
+        /* Desktop Grids */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
 
-        /* =======================================================
-           FIX 1: FOOTER ENLARGED (BIGGER HEIGHT & FONT SIZE)
-           ======================================================= */
+        /* Footer */
         .branding-footer {
             position: fixed; bottom: 0; left: 0; right: 0;
-            height: 65px; /* Increased Height */
-            z-index: 10000;
-            font-size: 18px; /* Increased Font Size */
-            color: #2d3436;
+            height: 65px; z-index: 10000;
+            font-size: 18px; color: #2d3436;
             display: flex; justify-content: space-between; align-items: center;
-            background: #ffffff; padding: 0 40px; /* Increased Side Padding */
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.08); /* Slightly stronger shadow */
-            border-top: 4px solid var(--primary-blue); /* Thicker border */
+            background: #ffffff; padding: 0 40px; 
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.08); 
+            border-top: 4px solid var(--primary-blue); 
             box-sizing: border-box;
         }
         .branding-footer a { color: var(--primary-blue); text-decoration: none; font-weight: bold;}
         
         .iso-badge {
             background: linear-gradient(135deg, #0984e3, #6c5ce7); color: white;
-            padding: 8px 20px; /* Bigger padding */
-            border-radius: 20px; 
-            font-size: 15px; /* Bigger font size */
-            font-weight: bold;
+            padding: 8px 20px; border-radius: 20px; font-size: 15px; font-weight: bold;
         }
 
-        /* =======================================================
-           FIX 2: SLIDE NUMBER AT TOP-RIGHT
-           ======================================================= */
+        /* Slide Number */
         .reveal .slide-number {
             top: 15px !important; bottom: auto !important; right: 15px !important;
             background: var(--primary-blue) !important; color: white !important;
@@ -128,7 +117,6 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
         }
 
-        /* Prevent Controls from touching footer */
         .reveal .controls { bottom: 80px !important; z-index: 9999 !important; }
 
         /* Client Alert / GDP-207 Banner */
@@ -145,7 +133,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* Navigation Hints (Made highly compact) */
+        /* Navigation Hints */
         .nav-hint-down {
             text-align: center; color: var(--accent-orange); font-size: 0.7em; font-weight: bold;
             margin-top: 5px; background: rgba(255, 234, 167, 0.5); padding: 4px 12px; border-radius: 20px; display: inline-block;
@@ -154,11 +142,51 @@
             text-align: center; color: var(--primary-blue); font-size: 0.7em; font-weight: bold;
             margin-top: 5px; background: rgba(116, 185, 255, 0.2); padding: 4px 12px; border-radius: 20px; display: inline-block; float: right;
         }
+
+        /* =======================================================
+           MOBILE RESPONSIVENESS FIXES
+           ======================================================= */
+        @media (max-width: 800px) {
+            .grid-2, .grid-3 { 
+                grid-template-columns: 1fr; /* Stack cards vertically */
+                gap: 15px; 
+            }
+            
+            .branding-footer {
+                height: auto; 
+                flex-direction: column; /* Stack footer elements */
+                padding: 10px 15px;
+                gap: 10px;
+                font-size: 14px;
+                text-align: center;
+            }
+            .branding-footer > div {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .client-alert {
+                flex-direction: column; /* Stack image and text */
+                text-align: center;
+            }
+            .client-alert img { margin: 0 0 10px 0 !important; }
+
+            .nav-hint-right { float: none; display: inline-block; margin: 10px auto; }
+            
+            .reveal h1 { font-size: 2.2em; }
+            .reveal h2 { font-size: 1.6em; }
+            
+            /* Slide specific margins for mobile to prevent top overlap */
+            section { padding-top: 20px; }
+            .reveal .slide-number { top: 5px !important; right: 5px !important; font-size: 12px !important; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Fixed Bottom Bar Footer (Bada Footer) -->
+    <!-- Fixed Bottom Bar Footer -->
     <div class="branding-footer">
         <div>🏢 <strong>Pan Business Lists Pvt. Ltd.</strong> | IT Department (Vikas Rawat)</div>
         <div style="display: flex; align-items: center; gap: 15px;">
@@ -189,7 +217,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="text-align: right; width: 100%;"><div class="nav-hint-right">Press RIGHT Arrow (➡️) to Start</div></div>
+                <div style="text-align: center; width: 100%;"><div class="nav-hint-right">Press RIGHT Arrow (➡️) to Start</div></div>
             </section>
 
             <!-- Agenda Slide -->
@@ -225,7 +253,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="text-align: right; width: 100%;"><div class="nav-hint-right">Press RIGHT Arrow (➡️) to continue</div></div>
+                <div style="text-align: center; width: 100%;"><div class="nav-hint-right">Press RIGHT Arrow (➡️) to continue</div></div>
             </section>
 
             <!-- SECTION 1: Office Discipline -->
@@ -266,7 +294,7 @@
                             <div class="point-item"><span class="point-num" style="background: var(--accent-red); color: white;">9</span> <div><span class="emoji-icon">🚪</span> <strong>NO TAILGATING:</strong> Agar aap access card swipe karke ghus rahe hain, toh <span class="alert">piche aane wale kisi shaks ke liye darwaza hold na karein</span>.</div></div>
                         </div>
                     </div>
-                    <div style="text-align: right; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
+                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
                 </section>
             </section>
 
@@ -311,7 +339,7 @@
                             <div class="point-item"><span class="point-num">18</span> <div><span class="emoji-icon">📲</span> <strong>Use MFA:</strong> Jahan bhi available ho, Multi-factor authentication (MFA) zaroor use karein.</div></div>
                         </div>
                     </div>
-                    <div style="text-align: right; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
+                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
                 </section>
             </section>
 
@@ -349,7 +377,7 @@
                             <div class="point-item"><span class="point-num">28</span> <div><span class="emoji-icon">⚡</span> <strong>BCP Basics:</strong> Outages ke time Business Continuity Plan (BCP) ke basics ko samjhein.</div></div>
                         </div>
                     </div>
-                    <div style="text-align: right; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
+                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
                 </section>
             </section>
 
@@ -389,7 +417,7 @@
                         <div class="modern-card" style="padding:10px 15px;"><div class="point-item" style="margin:0;"><span class="point-num">36</span> <div>Follow-up plan ready rakhein.</div></div></div>
                         <div class="modern-card" style="padding:10px 15px;"><div class="point-item" style="margin:0;"><span class="point-num">37</span> <div>Emergency contact accessible.</div></div></div>
                     </div>
-                    <div style="text-align: right; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
+                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
                 </section>
             </section>
 
@@ -433,7 +461,7 @@
                         <div class="point-item"><span class="point-num">45</span> <div><span class="emoji-icon">📖</span> <strong>Live the Policy:</strong> Company policy sirf padhne ke liye nahi hai; ise daily follow karein.</div></div>
                         <div class="point-item"><span class="point-num">46</span> <div><span class="emoji-icon">🤝</span> <strong>Shared Responsibility:</strong> ISO 27001 Security <span class="highlight">sabki responsibility hai</span>, sirf IT department ki nahi!</div></div>
                     </div>
-                    <div style="text-align: right; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Final Pillar</div></div>
+                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Final Pillar</div></div>
                 </section>
             </section>
 
@@ -484,7 +512,7 @@
                             </div>
                         </div>
                     </div>
-                    <div style="text-align: right; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Roleplay & Quiz</div></div>
+                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Roleplay & Quiz</div></div>
                 </section>
             </section>
 
@@ -507,7 +535,7 @@
                     <h3 style="color: var(--accent-purple); margin-bottom: 3px; font-size: 1.05em;">Q3: "How do you login to the GDP-207 portal?"</h3>
                     <p class="fragment" style="margin: 0; color: var(--accent-green); font-weight: bold; font-size: 0.85em;">✔️ Answer: Using the approved URL and my personal eToken (OTP), which I never share.</p>
                 </div>
-                <div style="text-align: right; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Final Summary</div></div>
+                <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Final Summary</div></div>
             </section>
 
             <!-- Conclusion & QA & QUIZ -->
@@ -535,14 +563,20 @@
         </div>
     </div>
 
+    <!-- Reveal.js Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
     <script>
+        // Check if the screen is mobile sized
+        var isMobile = window.innerWidth <= 800;
+
         Reveal.initialize({
-            width: 1280,
-            height: 1024,
+            // If mobile, switch to a portrait aspect ratio (720x1200)
+            // If desktop, stay on your 5:4 aspect ratio (1280x1024)
+            width: isMobile ? 720 : 1280,
+            height: isMobile ? 1200 : 1024,
             
-            // Adjusted margin slightly up to ensure bottom clearance
-            margin: 0.08, 
+            // Slightly smaller margin on mobile so text uses more screen space
+            margin: isMobile ? 0.05 : 0.08, 
             minScale: 0.2,
             maxScale: 2.0,
 
