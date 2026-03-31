@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Official Audit Trail - PBL Connect</title>
+    <title>Official Answer Sheet - PBL Connect</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,12 +21,14 @@
         body { background-color: var(--bg-light); color: var(--text-dark); padding: 30px 15px; }
         .container { max-width: 850px; margin: 0 auto; background: var(--surface-color); border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid var(--border-color); }
 
-        /* 🚀 MODERN AUDIT HEADER */
-        .brand-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--border-color); padding-bottom: 20px; margin-bottom: 25px; }
-        .brand-header img { height: 40px; width: auto; object-fit: contain; }
-        .brand-header h1 { font-size: 1.4em; font-weight: 800; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
-        
-        /* 📊 META INFO CARD (Name, Date, Score) */
+        /* 🚀 MODERN REPORT HEADER */
+        .brand-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid #1e3a8a; padding-bottom: 15px; margin-bottom: 25px; }
+        .header-left img { height: 45px; width: auto; object-fit: contain; }
+        .header-right { text-align: right; }
+        .header-right h1 { font-size: 1.5em; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 6px 0; }
+        .header-right .doc-badge { font-size: 0.85em; font-weight: 800; color: #3b82f6; text-transform: uppercase; letter-spacing: 1px; background: #eff6ff; padding: 5px 12px; border-radius: 8px; border: 1px solid #bfdbfe; display: inline-block; }
+
+        /* 📊 META INFO CARD */
         .audit-meta-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
         .meta-item { border-right: 1px dashed #cbd5e1; padding-right: 15px; }
         .meta-item:last-child { border-right: none; padding-right: 0; }
@@ -34,8 +36,8 @@
         .meta-item strong { font-size: 1.1em; color: #0f172a; font-weight: 800; word-break: break-word; }
         .meta-item.score-item strong { color: #2563eb; font-size: 1.4em; }
 
-        /* Questions */
-        .question-block { margin-bottom: 25px; padding: 20px; background: #fff; border-radius: 15px; border: 1px solid var(--border-color); }
+        /* 📝 QUESTIONS */
+        .question-block { margin-bottom: 25px; padding: 20px; background: #fff; border-radius: 15px; border: 1px solid var(--border-color); page-break-inside: avoid; }
         .q-number { color: #64748b; font-weight: 800; font-size: 0.8em; text-transform: uppercase; display: block; margin-bottom: 5px; }
         .q-text { font-size: 1.05em; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; line-height: 1.4; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -66,13 +68,29 @@
         .option-label.wrong-ans .swipe-checkmark { background-color: #e74c3c; transform: translateY(0); }
         .option-label.wrong-ans::after { content: '❌ User Selected'; margin-left: auto; color: #e74c3c; font-weight: 800; font-size: 0.85em; text-align:right;}
 
-        /* 🏢 FOOTER */
-        .audit-footer { text-align: center; padding-top: 30px; margin-top: 30px; border-top: 1px solid var(--border-color); color: #64748b; font-size: 0.85em; font-weight: 500; }
-        .audit-footer strong { color: #0f172a; }
+        /* 🏢 CORPORATE FOOTER */
+        .modern-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 25px; margin-top: 30px; border-top: 2px dashed #cbd5e1; font-size: 0.85em; page-break-inside: avoid; }
+        .footer-col { display: flex; flex-direction: column; gap: 5px; }
+        .footer-col strong { color: #0f172a; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .footer-col span { color: #64748b; font-weight: 600; }
+        .footer-col.text-center { align-items: center; }
+        .footer-col.text-right { text-align: right; align-items: flex-end; }
 
+        /* 🖨️ PRINT OPTIMIZATION (For PDF Export) */
+        @media print {
+            body { background: #fff !important; padding: 0 !important; }
+            .container { box-shadow: none !important; border: none !important; padding: 0 !important; max-width: 100% !important; }
+            .option-label { border: 1px solid #cbd5e1 !important; }
+            .option-label.actual-correct, .option-label.correct-ans { border: 2px solid #27ae60 !important; }
+            .option-label.wrong-ans { border: 2px solid #e74c3c !important; }
+            .brand-header { padding-bottom: 10px; margin-bottom: 15px; }
+        }
+
+        /* 📱 MOBILE RESPONSIVE */
         @media (max-width: 768px) {
             .options-grid { grid-template-columns: 1fr; }
-            .brand-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .brand-header, .modern-footer { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .header-right, .footer-col.text-right, .footer-col.text-center { text-align: left; align-items: flex-start; }
             .audit-meta-card { grid-template-columns: 1fr; gap: 20px; }
             .meta-item { border-right: none; border-bottom: 1px dashed #cbd5e1; padding-right: 0; padding-bottom: 15px; }
             .meta-item:last-child { border-bottom: none; padding-bottom: 0; }
@@ -83,14 +101,19 @@
 
     <div class="container">
         
-        <!-- 🚀 Official Header with Logo -->
+        <!-- 🚀 Official Header -->
         <div class="brand-header">
-            <img src="pbl-logo.png" alt="PBL Logo">
-            <h1><i class="fas fa-file-contract" style="color:#3b82f6; margin-right:8px;"></i> Compliance Audit Trail</h1>
+            <div class="header-left">
+                <img src="pbl-logo.png" alt="PBL Logo">
+            </div>
+            <div class="header-right">
+                <h1>Official Answer Sheet</h1>
+                <span class="doc-badge"><i class="fas fa-file-signature"></i> IT & POSH Awareness 2026</span>
+            </div>
         </div>
 
         <!-- 📊 Meta Info Box -->
-        <div class="audit-meta-card">
+        <div class="audit-meta-card" id="metaCard">
             <div class="meta-item">
                 <span><i class="fas fa-user"></i> Candidate Name</span>
                 <strong id="candidateNameDisplay">Loading...</strong>
@@ -101,19 +124,30 @@
             </div>
             <div class="meta-item">
                 <span><i class="fas fa-clock"></i> Submission Date & Time</span>
-                <strong id="timestampDisplay">Record not found</strong>
+                <strong id="timestampDisplay">Loading...</strong>
             </div>
         </div>
 
         <div id="quizContainer">
-            <!-- Questions rendered via JS -->
+            <!-- Questions rendered via JS perfectly matching the main form -->
         </div>
 
-        <!-- 🏢 Audit Footer -->
-        <div class="audit-footer">
-            <p><strong>Pan Business Lists Pvt. Ltd.</strong></p>
-            <p>This document is auto-generated by the PBL Connect compliance system and serves as an official audit record.</p>
+        <!-- 🏢 Modern Corporate Footer -->
+        <div class="modern-footer" id="modernFooter">
+            <div class="footer-col">
+                <strong>Pan Business Lists Pvt. Ltd.</strong>
+                <span>IT Security & Compliance Dept.</span>
+            </div>
+            <div class="footer-col text-center">
+                <i class="fas fa-check-circle" style="color: #27ae60; font-size: 1.5em; margin-bottom: 2px;"></i>
+                <span>System Verified Record</span>
+            </div>
+            <div class="footer-col text-right">
+                <strong>Report Generated via PBL Connect</strong>
+                <span>For HR Department Records</span>
+            </div>
         </div>
+        
     </div>
 
     <script>
@@ -135,17 +169,18 @@
         const urlParams = new URLSearchParams(window.location.search);
         const candidateName = urlParams.get('name');
         const answersRaw = urlParams.get('ans'); 
-        const timestampRaw = urlParams.get('ts'); // ✅ NAYA: Timestamp catch kiya
+        const timestampRaw = urlParams.get('ts'); // URL se timestamp nikalna
 
         const quizContainer = document.getElementById('quizContainer');
 
         // 🛑 REALITY CHECK: Agar URL mein data nahi hai, toh warning dikhao!
         if (!candidateName || !answersRaw) {
-            document.querySelector('.audit-meta-card').style.display = 'none';
+            document.getElementById('metaCard').style.display = 'none';
+            document.getElementById('modernFooter').style.display = 'none';
             quizContainer.innerHTML = `
                 <div style="text-align:center; padding: 50px 20px;">
                     <i class="fas fa-shield-alt" style="font-size: 3em; color: #e74c3c; margin-bottom:15px;"></i>
-                    <h2 style="color: #0f172a;">Invalid Audit Request</h2>
+                    <h2 style="color: #0f172a;">Invalid Document Request</h2>
                     <p style="color: #64748b; margin-top:10px;">Please open this record directly from the 'View Paper' link in the Master Database.</p>
                 </div>
             `;
@@ -153,7 +188,7 @@
             // ✅ POPULATE META INFO
             document.getElementById('candidateNameDisplay').innerText = candidateName;
             
-            // 🔴 FIX: Agar purana link hai jisme time nahi hai, toh professional message dikhao
+            // Handle Old vs New Records properly
             if (timestampRaw) {
                 document.getElementById('timestampDisplay').innerHTML = `<span style="color:#0f172a;">${timestampRaw}</span>`;
             } else {
@@ -180,14 +215,17 @@
 
                 let optionsHtml = '';
                 
+                // Loop through A, B, C, D
                 for (const [key, text] of Object.entries(question.opt)) {
                     let cssClass = '';
                     
                     if (isCorrect) {
+                        // Agar user sahi hai, toh sirf Green lagao
                         if (key === correctOpt) cssClass = 'correct-ans';
                     } else {
-                        if (key === correctOpt) cssClass = 'actual-correct'; 
-                        if (key === userOpt) cssClass = 'wrong-ans'; 
+                        // Agar user galat hai ya NA hai
+                        if (key === correctOpt) cssClass = 'actual-correct'; // Asli answer pe Blue
+                        if (key === userOpt) cssClass = 'wrong-ans'; // User ke galat answer pe Red
                     }
 
                     optionsHtml += `
@@ -198,6 +236,7 @@
                     `;
                 }
 
+                // UI Visual Cues (Question Border & Marks)
                 const blockBorder = isCorrect ? '#27ae60' : '#e74c3c';
                 const scoreBadge = isCorrect 
                     ? `<span style="float:right; color:#27ae60;">✅ 1/1 Marks</span>` 
