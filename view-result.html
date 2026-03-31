@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Audit Trail - PBL Connect</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --surface-color: #ffffff;
+            --bg-light: #f8f9fa;
+            --text-dark: #2c3e50;
+            --border-color: #e1e4e8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); padding: 30px 15px; }
+        .container { max-width: 850px; margin: 0 auto; background: var(--surface-color); border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid var(--border-color); }
+
+        /* 🚀 MODERN AUDIT HEADER */
+        .brand-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--border-color); padding-bottom: 20px; margin-bottom: 25px; }
+        .brand-header img { height: 40px; width: auto; object-fit: contain; }
+        .brand-header h1 { font-size: 1.4em; font-weight: 800; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
+        
+        /* 📊 META INFO CARD (Name, Date, Score) */
+        .audit-meta-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        .meta-item { border-right: 1px dashed #cbd5e1; padding-right: 15px; }
+        .meta-item:last-child { border-right: none; padding-right: 0; }
+        .meta-item span { font-size: 0.75em; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
+        .meta-item strong { font-size: 1.1em; color: #0f172a; font-weight: 800; word-break: break-word; }
+        .meta-item.score-item strong { color: #2563eb; font-size: 1.4em; }
+
+        /* Questions */
+        .question-block { margin-bottom: 25px; padding: 20px; background: #fff; border-radius: 15px; border: 1px solid var(--border-color); }
+        .q-number { color: #64748b; font-weight: 800; font-size: 0.8em; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .q-text { font-size: 1.05em; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; line-height: 1.4; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .option-label { display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: #f8fafc; border: 2px solid var(--border-color); border-radius: 12px; margin-bottom: 10px; pointer-events: none; }
+        
+        .swipe-container { display: block; position: relative; font-size: 20px; border: 3px solid #beddd0; border-radius: 10px; overflow: hidden; width: 1.3em; height: 1.3em; flex-shrink: 0; background: white; }
+        .swipe-checkmark { position: relative; top: 0; left: 0; height: 1.3em; width: 1.3em; background-color: #cbd5e1; border-bottom: 1.5px solid #94a3b8; border-radius: 8px; transform: translateY(-40px); }
+        .swipe-checkmark:before { content: ""; position: absolute; left: 9px; top: 3px; width: 5px; height: 10px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+        
+        .option-text { font-size: 0.95em; font-weight: 600; color: var(--text-dark); }
+
+        /* 🟢 CORRECT ANSWER STYLES */
+        .option-label.correct-ans { border-color: #27ae60; background: #f0fdf4; }
+        .option-label.correct-ans .swipe-container { border-color: #27ae60; }
+        .option-label.correct-ans .swipe-checkmark { background-color: #27ae60; transform: translateY(0); }
+        .option-label.correct-ans::after { content: '✅ User Selected'; margin-left: auto; color: #27ae60; font-weight: 800; font-size: 0.85em; text-align:right;}
+
+        /* 🔵 ACTUAL CORRECT ANSWER (Shown when user is wrong or NA) */
+        .option-label.actual-correct { border-color: #3b82f6; background: #eff6ff; }
+        .option-label.actual-correct .swipe-container { border-color: #3b82f6; }
+        .option-label.actual-correct .swipe-checkmark { background-color: #3b82f6; transform: translateY(0); }
+        .option-label.actual-correct::after { content: '✔️ Right Answer'; margin-left: auto; color: #3b82f6; font-weight: 800; font-size: 0.85em; text-align:right;}
+
+        /* 🔴 WRONG ANSWER SELECTED BY USER */
+        .option-label.wrong-ans { border-color: #e74c3c; background: #fff1f2; }
+        .option-label.wrong-ans .swipe-container { border-color: #e74c3c; }
+        .option-label.wrong-ans .swipe-checkmark { background-color: #e74c3c; transform: translateY(0); }
+        .option-label.wrong-ans::after { content: '❌ User Selected'; margin-left: auto; color: #e74c3c; font-weight: 800; font-size: 0.85em; text-align:right;}
+
+        /* 🏢 FOOTER */
+        .audit-footer { text-align: center; padding-top: 30px; margin-top: 30px; border-top: 1px solid var(--border-color); color: #64748b; font-size: 0.85em; font-weight: 500; }
+        .audit-footer strong { color: #0f172a; }
+
+        @media (max-width: 768px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .brand-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .audit-meta-card { grid-template-columns: 1fr; gap: 20px; }
+            .meta-item { border-right: none; border-bottom: 1px dashed #cbd5e1; padding-right: 0; padding-bottom: 15px; }
+            .meta-item:last-child { border-bottom: none; padding-bottom: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- 🚀 Official Header with Logo -->
+        <div class="brand-header">
+            <img src="pbl-logo.png" alt="PBL Logo">
+            <h1><i class="fas fa-file-contract" style="color:#3b82f6; margin-right:8px;"></i> Compliance Audit Trail</h1>
+        </div>
+
+        <!-- 📊 Meta Info Box -->
+        <div class="audit-meta-card">
+            <div class="meta-item">
+                <span><i class="fas fa-user"></i> Candidate Name</span>
+                <strong id="candidateNameDisplay">Loading...</strong>
+            </div>
+            <div class="meta-item score-item">
+                <span><i class="fas fa-crosshairs"></i> Final Score</span>
+                <strong id="candidateScoreDisplay">- / 10</strong>
+            </div>
+            <div class="meta-item">
+                <span><i class="fas fa-clock"></i> Submission Date & Time</span>
+                <strong id="timestampDisplay">Record not found</strong>
+            </div>
+        </div>
+
+        <div id="quizContainer">
+            <!-- Questions rendered via JS -->
+        </div>
+
+        <!-- 🏢 Audit Footer -->
+        <div class="audit-footer">
+            <p><strong>Pan Business Lists Pvt. Ltd.</strong></p>
+            <p>This document is auto-generated by the PBL Connect compliance system and serves as an official audit record.</p>
+        </div>
+    </div>
+
+    <script>
+        // 🔴 1. EXACT QUESTIONS & CORRECT ANSWERS
+        const QUIZ_DATA =[
+            { id: 'q1', q: "What is the most secure way to create a password?", opt: {A:"Use your name & birth year", B:"Use 'Password@123'", C:"Mix of Upper, Lower, Numbers & Symbols", D:"Write it on a sticky note"}, ans: 'C' },
+            { id: 'q2', q: "What should you do if you receive a suspicious email asking for login details?", opt: {A:"Reply with details", B:"Report to IT & Delete", C:"Forward to everyone", D:"Click the link to check"}, ans: 'B' },
+            { id: 'q3', q: "When leaving your desk, what is the mandatory action?", opt: {A:"Turn off monitor", B:"Lock screen (Win + L)", C:"Leave it open", D:"Ask colleague to watch"}, ans: 'B' },
+            { id: 'q4', q: "According to GDPR, what is 'Personal Data'?", opt: {A:"Only Name", B:"Public Company Data", C:"Any info identifying a person", D:"Weather data"}, ans: 'C' },
+            { id: 'q5', q: "What is the 'Clean Desk Policy'?", opt: {A:"Cleaning dust daily", B:"Not eating at desk", C:"Securing sensitive documents", D:"Having a nice flower pot"}, ans: 'C' },
+            { id: 'q6', q: "Where should you save official work files?", opt: {A:"Desktop", B:"Personal Gmail Drive", C:"USB Drive", D:"Company Server"}, ans: 'D' },
+            { id: 'q7', q: "What does POSH stand for?", opt: {A:"Prevention of Sexual Harassment", B:"Polite Office Social Habits", C:"Public Office Safety Health", D:"None of the above"}, ans: 'A' },
+            { id: 'q8', q: "Which of these is considered inappropriate workplace behavior?", opt: {A:"Shaking hands", B:"Unwelcome jokes or comments", C:"Asking for work update", D:"Team lunch"}, ans: 'B' },
+            { id: 'q9', q: "To whom should you report a POSH incident?", opt: {A:"Social Media", B:"Internal Committee (IC) / HR", C:"Friends only", D:"Ignore it"}, ans: 'B' },
+            { id: 'q10', q: "Who is responsible for Data Security at PBL?", opt: {A:"Only IT Team", B:"Only Management", C:"Every Employee", D:"Security Guard"}, ans: 'C' }
+        ];
+
+        // 🟢 2. URL PARSER (Get Name, Answers & Timestamp)
+        const urlParams = new URLSearchParams(window.location.search);
+        const candidateName = urlParams.get('name');
+        const answersRaw = urlParams.get('ans'); 
+        const timestampRaw = urlParams.get('ts'); // ✅ NAYA: Timestamp catch kiya
+
+        const quizContainer = document.getElementById('quizContainer');
+
+        // 🛑 REALITY CHECK: Agar URL mein data nahi hai, toh warning dikhao!
+        if (!candidateName || !answersRaw) {
+            document.querySelector('.audit-meta-card').style.display = 'none';
+            quizContainer.innerHTML = `
+                <div style="text-align:center; padding: 50px 20px;">
+                    <i class="fas fa-shield-alt" style="font-size: 3em; color: #e74c3c; margin-bottom:15px;"></i>
+                    <h2 style="color: #0f172a;">Invalid Audit Request</h2>
+                    <p style="color: #64748b; margin-top:10px;">Please open this record directly from the 'View Paper' link in the Master Database.</p>
+                </div>
+            `;
+        } else {
+            // ✅ POPULATE META INFO
+            document.getElementById('candidateNameDisplay').innerText = candidateName;
+            
+            // 🔴 FIX: Agar purana link hai jisme time nahi hai, toh professional message dikhao
+            if (timestampRaw) {
+                document.getElementById('timestampDisplay').innerHTML = `<span style="color:#0f172a;">${timestampRaw}</span>`;
+            } else {
+                document.getElementById('timestampDisplay').innerHTML = `<span style="color:#e74c3c; font-style:italic;">Not Available (Old Record)</span>`;
+            }
+
+            const userAnswers = {};
+            answersRaw.split(',').forEach(pair => {
+                const parts = pair.split(':');
+                if(parts.length === 2) {
+                    userAnswers[parts[0].trim().toLowerCase()] = parts[1].trim();
+                }
+            });
+
+            // 🔴 3. RENDER UI LOGIC
+            let totalScore = 0;
+
+            QUIZ_DATA.forEach((question, index) => {
+                const correctOpt = question.ans;
+                const userOpt = userAnswers[question.id] || 'NA';
+                const isCorrect = (userOpt === correctOpt);
+
+                if (isCorrect) totalScore++;
+
+                let optionsHtml = '';
+                
+                for (const [key, text] of Object.entries(question.opt)) {
+                    let cssClass = '';
+                    
+                    if (isCorrect) {
+                        if (key === correctOpt) cssClass = 'correct-ans';
+                    } else {
+                        if (key === correctOpt) cssClass = 'actual-correct'; 
+                        if (key === userOpt) cssClass = 'wrong-ans'; 
+                    }
+
+                    optionsHtml += `
+                        <label class="option-label ${cssClass}">
+                            <div class="swipe-container"><div class="swipe-checkmark"></div></div>
+                            <span class="option-text">${key}. ${text}</span>
+                        </label>
+                    `;
+                }
+
+                const blockBorder = isCorrect ? '#27ae60' : '#e74c3c';
+                const scoreBadge = isCorrect 
+                    ? `<span style="float:right; color:#27ae60;">✅ 1/1 Marks</span>` 
+                    : `<span style="float:right; color:#e74c3c;">❌ 0/1 Marks ${userOpt === 'NA' ? '(Not Attempted)' : ''}</span>`;
+
+                quizContainer.innerHTML += `
+                    <div class="question-block" style="border-left: 5px solid ${blockBorder};">
+                        <span class="q-number">Question ${index + 1} / 10 ${scoreBadge}</span>
+                        <p class="q-text">${question.q}</p>
+                        <div class="options-grid">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // ✅ Set Final Score in Top Meta Card
+            document.getElementById('candidateScoreDisplay').innerText = `${totalScore} / 10`;
+        }
+    </script>
+</body>
+</html>
