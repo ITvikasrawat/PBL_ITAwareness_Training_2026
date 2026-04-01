@@ -2,598 +2,724 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT & Data Security Awareness - GDP-207 - Pan Business Lists</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IT & Data Security Awareness | PBL</title>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Reveal.js CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css" id="theme">
+    <!-- Modern Premium Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
 
     <style>
+        /* =================================================================
+           GLOBAL VARIABLES
+           ================================================================= */
         :root {
-            --primary-blue: #0984e3;
-            --dark-text: #2d3436;
-            --light-bg: #f5f6fa;
-            --accent-green: #00b894;
-            --accent-red: #d63031;
-            --accent-orange: #e17055;
-            --accent-purple: #6c5ce7;
-            --german-gold: #ffce00;
+            --primary: #4f46e5;   /* Indigo */
+            --success: #10b981;   /* Emerald */
+            --warning: #f59e0b;   /* Amber */
+            --info: #0ea5e9;      /* Sky Blue */
+            --purple: #a855f7;    /* Purple */
+            --danger: #ef4444;    /* Red */
+            --german: #ffce00;    /* German Gold */
+            --text-dark: #0f172a;
+            --text-gray: #334155;
+            --light-bg: #f8fafc;
         }
 
-        body {
-            background: #fdfbfb;
-            font-family: 'Poppins', sans-serif;
-            color: var(--dark-text);
-            margin: 0; padding: 0;
-            overflow: hidden;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 
-        .reveal .slides { text-align: left; }
+        /* =================================================================
+           🖥️ DESKTOP VIEW (PREMIUM CINEMATIC LAYOUT - SPACE FULLY UTILIZED)
+           ================================================================= */
+        @media (min-width: 851px) {
+            .mobile-view { display: none !important; }
 
-        .reveal h1, .reveal h2, .reveal h3 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700; text-transform: none; color: var(--dark-text);
-        }
+            body { background-color: var(--light-bg); color: var(--text-dark); overflow: hidden; font-size: 18px; }
 
-        .reveal h1 { color: var(--primary-blue); font-size: 2.3em; text-shadow: 2px 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
-        .reveal h2 { color: var(--accent-purple); font-size: 1.6em; border-bottom: 3px solid var(--primary-blue); display: inline-block; padding-bottom: 5px; margin-bottom: 20px;}
-        .reveal h3 { color: var(--primary-blue); font-size: 1.1em; margin-bottom: 10px; font-weight: 600;}
+            /* Floating Blobs Background */
+            .blob { position: absolute; filter: blur(120px); z-index: 0; opacity: 0.3; border-radius: 50%; animation: float 12s infinite ease-in-out alternate; }
+            .blob-1 { top: -10%; left: -10%; width: 600px; height: 600px; background: var(--info); }
+            .blob-2 { bottom: -10%; right: -10%; width: 700px; height: 700px; background: var(--purple); animation-delay: -5s; }
+            .blob-3 { top: 30%; right: -5%; width: 500px; height: 500px; background: var(--german); animation-duration: 15s; opacity: 0.15; }
 
-        /* Modern Cards */
-        .modern-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 15px 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
-            border-left: 6px solid var(--primary-blue);
-            transition: transform 0.2s ease;
-        }
-        .modern-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(9, 132, 227, 0.15); }
+            @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, -50px) scale(1.1); } }
 
-        .card-green { border-left-color: var(--accent-green); }
-        .card-red { border-left-color: var(--accent-red); }
-        .card-orange { border-left-color: var(--accent-orange); }
-        .card-german { border-left-color: var(--german-gold); background: linear-gradient(to right, #ffffff, #fffdf5); }
-        .card-purple { border-left-color: var(--accent-purple); }
+            .d-progress-bar { position: fixed; top: 0; left: 0; height: 6px; background: linear-gradient(90deg, var(--primary), var(--purple), var(--success)); width: 0%; z-index: 9999; transition: width 0.3s ease; }
 
-        .agenda-card h3 { font-size: 1.05em; margin-bottom: 8px; }
-        .agenda-card p { font-size: 0.7em; margin: 0; line-height: 1.4; }
+            .d-header { position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 4%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+            .d-header-brand { font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.9); padding: 10px 20px; border-radius: 30px; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+            .d-meta-pill { background: rgba(255, 255, 255, 0.95); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.05); backdrop-filter: blur(10px); display: flex; gap: 15px; align-items: center; }
 
-        .point-item {
-            font-size: 0.8em; line-height: 1.4; margin-bottom: 10px;
-            display: flex; align-items: flex-start; color: #333;
-        }
-        .point-item:last-child { margin-bottom: 0; }
+            .d-presentation { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; position: relative; z-index: 10; }
+            .d-presentation::-webkit-scrollbar { display: none; }
 
-        .point-num {
-            background: var(--light-bg); color: var(--primary-blue);
-            border-radius: 50%; min-width: 32px; height: 32px;
-            display: inline-flex; justify-content: center; align-items: center;
-            font-weight: bold; margin-right: 12px; font-size: 0.9em;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); border: 2px solid var(--primary-blue);
-        }
+            .d-slide { height: 100vh; width: 100vw; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 6rem 4% 3rem; position: relative; }
+            .d-slide-header { text-align: center; margin-bottom: 3rem; max-width: 1200px; z-index: 2; }
 
-        .emoji-icon { font-size: 1.2em; margin-right: 10px; }
+            .d-slide h1 { font-size: 4rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 0.8rem; background: linear-gradient(135deg, var(--primary), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+            .d-slide h2 { font-size: 2.8rem; font-weight: 900; margin-bottom: 0.8rem; letter-spacing: -1px; }
+            .d-subtitle { font-size: 1.4rem; color: var(--text-gray); font-weight: 600; }
 
-        .highlight { color: var(--primary-blue); font-weight: bold; background: rgba(9, 132, 227, 0.1); padding: 2px 6px; border-radius: 4px;}
-        .alert { color: var(--accent-red); font-weight: bold; background: rgba(214, 48, 49, 0.1); padding: 2px 6px; border-radius: 4px;}
-        .success { color: var(--accent-green); font-weight: bold; background: rgba(0, 184, 148, 0.1); padding: 2px 6px; border-radius: 4px;}
+            /* Grids - Maximized for Screen Space */
+            .d-grid-full { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; width: 100%; max-width: 1400px; z-index: 2; }
+            .d-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; width: 100%; max-width: 1400px; z-index: 2; }
 
-        /* Desktop Grids */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-
-        /* Footer */
-        .branding-footer {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            height: 65px; z-index: 10000;
-            font-size: 18px; color: #2d3436;
-            display: flex; justify-content: space-between; align-items: center;
-            background: #ffffff; padding: 0 40px; 
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.08); 
-            border-top: 4px solid var(--primary-blue); 
-            box-sizing: border-box;
-        }
-        .branding-footer a { color: var(--primary-blue); text-decoration: none; font-weight: bold;}
-        
-        .iso-badge {
-            background: linear-gradient(135deg, #0984e3, #6c5ce7); color: white;
-            padding: 8px 20px; border-radius: 20px; font-size: 15px; font-weight: bold;
-        }
-
-        /* Slide Number */
-        .reveal .slide-number {
-            top: 15px !important; bottom: auto !important; right: 15px !important;
-            background: var(--primary-blue) !important; color: white !important;
-            border-radius: 15px !important; padding: 5px 12px !important;
-            font-size: 14px !important; font-family: 'Poppins', sans-serif !important;
-            font-weight: bold !important; z-index: 10000 !important;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
-        }
-
-        .reveal .controls { bottom: 80px !important; z-index: 9999 !important; }
-
-        /* Client Alert / GDP-207 Banner */
-        .client-alert {
-            background: linear-gradient(135deg, #fff9e6 0%, #ffeaa7 100%);
-            border-left: 6px solid var(--accent-orange); padding: 10px 15px; border-radius: 8px;
-            color: #2d3436; font-weight: 600; font-size: 0.85em; display: flex; align-items: center;
-            box-shadow: 0 4px 10px rgba(225, 112, 85, 0.15);
-        }
-
-        /* Background Section */
-        .image-bg-section {
-            background: rgba(255, 255, 255, 0.95); padding: 20px 25px; border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        /* Navigation Hints */
-        .nav-hint-down {
-            text-align: center; color: var(--accent-orange); font-size: 0.7em; font-weight: bold;
-            margin-top: 5px; background: rgba(255, 234, 167, 0.5); padding: 4px 12px; border-radius: 20px; display: inline-block;
-        }
-        .nav-hint-right {
-            text-align: center; color: var(--primary-blue); font-size: 0.7em; font-weight: bold;
-            margin-top: 5px; background: rgba(116, 185, 255, 0.2); padding: 4px 12px; border-radius: 20px; display: inline-block; float: right;
-        }
-
-        /* =======================================================
-           MOBILE RESPONSIVENESS FIXES
-           ======================================================= */
-        @media (max-width: 800px) {
-            .grid-2, .grid-3 { 
-                grid-template-columns: 1fr; /* Stack cards vertically */
-                gap: 15px; 
-            }
+            /* Cards - Bigger, Taller, more Padding */
+            .d-card { background: rgba(255,255,255,0.9); border-radius: 20px; padding: 2.5rem 2.2rem; backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); transition: all 0.4s ease; opacity: 0; display: flex; flex-direction: column; justify-content: flex-start; min-height: 220px; border-top: 6px solid transparent;}
+            .d-card:hover { transform: translateY(-8px); background: #ffffff; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
             
-            .branding-footer {
-                height: auto; 
-                flex-direction: column; /* Stack footer elements */
-                padding: 10px 15px;
-                gap: 10px;
-                font-size: 14px;
-                text-align: center;
-            }
-            .branding-footer > div {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-                align-items: center;
-            }
+            .d-card.primary { border-top-color: var(--primary); } .d-card.success { border-top-color: var(--success); } .d-card.warning { border-top-color: var(--warning); } .d-card.info { border-top-color: var(--info); } .d-card.danger { border-top-color: var(--danger); } .d-card.german { border-top-color: var(--german); background: linear-gradient(to bottom right, rgba(255,255,255,0.95), rgba(255, 253, 240, 0.95)); }
 
-            .client-alert {
-                flex-direction: column; /* Stack image and text */
-                text-align: center;
-            }
-            .client-alert img { margin: 0 0 10px 0 !important; }
+            .d-card h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px;}
+            .d-card p { font-size: 1.15rem; line-height: 1.6; color: var(--text-gray); font-weight: 600; margin: 0; }
+            
+            .d-point-list { display: flex; flex-direction: column; gap: 15px; }
+            .d-point-item { display: flex; align-items: flex-start; gap: 15px; font-size: 1.1rem; color: var(--text-gray); font-weight: 600; line-height: 1.5;}
+            .d-point-num { background: rgba(79, 70, 229, 0.1); color: var(--primary); min-width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 1rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+            .d-point-num.danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
 
-            .nav-hint-right { float: none; display: inline-block; margin: 10px auto; }
+            /* Animations */
+            .d-slide-up { transform: translateY(50px); } .d-slide-left { transform: translateX(-50px); } .d-slide-right { transform: translateX(50px); }
+            .d-animate.d-visible { opacity: 1; transform: translate(0); transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+            /* Modern Scroll Pill & Number */
+            .d-scroll-hint { position: absolute; bottom: 30px; color: var(--primary); font-weight: 800; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; animation: bounce 2s infinite; z-index: 10; background: rgba(255,255,255,0.95); padding: 12px 25px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 8px;}
+            @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} 60% {transform: translateY(-4px);} }
+
+            .d-slide-number { position: absolute; bottom: 90px; text-align: center; width: 100%; font-size: 1.2rem; font-weight: 800; color: #94a3b8; z-index: 1; display: none; }
+
+            /* Key Reveal Box for Mock Interview */
+            .d-qa-card { position: relative; padding: 2rem 2.5rem !important; margin-bottom: 15px; border: 2px solid transparent;}
+            .d-answer-box { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s ease; margin-top: 0; }
+            .d-qa-card.d-revealed { border-color: var(--success); background: #f0fdf4; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15); }
+            .d-qa-card.d-revealed .d-answer-box { max-height: 200px; opacity: 1; margin-top: 20px; }
+            .d-click-hint { display: inline-flex; align-items: center; color: white; background: var(--primary); padding: 6px 16px; border-radius: 30px; font-size: 0.95rem; font-weight: 800; margin-top: 15px; animation: pulseHint 2s infinite; }
+            .d-qa-card.d-revealed .d-click-hint { display: none; }
+            @keyframes pulseHint { 0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); } 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); } }
+        }
+
+        /* =================================================================
+           📱 MOBILE VIEW (NATIVE APP STYLE)
+           ================================================================= */
+        @media (max-width: 850px) {
+            .desktop-view { display: none !important; }
+
+            body { background-color: #F1F5F9; color: #1E293B; overflow-x: hidden; font-size: 16px; -webkit-tap-highlight-color: transparent; }
+
+            .m-header { position: sticky; top: 0; z-index: 100; background: white; padding: 1rem 5%; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 5px; }
+            .m-header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+            .m-header-sub { font-size: 0.8rem; color: #64748B; font-weight: 600; display: flex; justify-content: space-between;}
+
+            .m-hero { padding: 2rem 5%; background: linear-gradient(135deg, white, #EEF2FF); text-align: center; border-bottom: 1px solid #E2E8F0; }
+            .m-hero h1 { font-size: 1.8rem; font-weight: 900; line-height: 1.2; margin-bottom: 10px; color: #0F172A;}
+            .m-hero .m-badge { display: inline-block; background: #FEF2F2; color: var(--danger); font-size: 0.8rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; border: 1px solid #FECACA; margin-bottom: 10px;}
             
-            .reveal h1 { font-size: 2.2em; }
-            .reveal h2 { font-size: 1.6em; }
+            .m-gdp-alert { background: #FEFCE8; border: 2px solid var(--german); padding: 1rem; border-radius: 12px; margin-top: 15px; text-align: left;}
+            .m-gdp-alert h3 { font-size: 1rem; color: #B45309; display: flex; align-items: center; gap: 8px; margin-bottom: 5px;}
+
+            .m-container { padding: 1.5rem 5%; }
+            .m-section-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 1rem; color: #0F172A; }
+
+            .m-accordion-item { background: white; border-radius: 16px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden; border: 1px solid #E2E8F0; }
+            .m-accordion-header { padding: 1.2rem; display: flex; justify-content: space-between; align-items: center; background: white; font-weight: 800; font-size: 1.05rem; color: #1E293B; cursor: pointer; }
+            .m-accordion-header.german { background: #FEFCE8; color: #92400E; }
+            .m-icon-box { display: flex; align-items: center; gap: 10px; }
+            .m-chevron { transition: transform 0.3s ease; color: var(--primary); font-size: 1.5rem;}
+            .m-accordion-item.active .m-chevron { transform: rotate(180deg); }
             
-            /* Slide specific margins for mobile to prevent top overlap */
-            section { padding-top: 20px; }
-            .reveal .slide-number { top: 5px !important; right: 5px !important; font-size: 12px !important; }
+            .m-accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #F8FAFC; border-top: 1px solid #E2E8F0; }
+            .m-accordion-content { padding: 1.2rem; display: flex; flex-direction: column; gap: 15px; }
+
+            .m-point { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; font-weight: 600; color: #475569; line-height: 1.4; }
+            .m-point-num { background: white; border: 2px solid var(--primary); color: var(--primary); min-width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 900; flex-shrink: 0; margin-top: 2px;}
+            .m-point-num.danger { border-color: var(--danger); color: var(--danger); background: #FEF2F2;}
+
+            .m-flashcard-container { display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scroll-snap-type: x mandatory; }
+            .m-flashcard-container::-webkit-scrollbar { display: none; }
+            .m-flashcard { min-width: 85vw; background: white; border-radius: 16px; padding: 1.5rem; scroll-snap-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 2px solid var(--purple); display: flex; flex-direction: column; justify-content: center; position: relative; transition: all 0.3s ease; }
+            .m-flashcard h4 { font-size: 1.1rem; color: var(--purple); font-weight: 800; margin-bottom: 10px; line-height: 1.4;}
+            .m-tap-hint { color: white; background: var(--purple); font-size: 0.8rem; padding: 4px 12px; border-radius: 20px; align-self: flex-start; font-weight: 800; margin-top: 10px;}
+            .m-flash-answer { display: none; margin-top: 15px; color: var(--success); font-weight: 800; font-size: 1rem; border-top: 1px dashed #E2E8F0; padding-top: 15px;}
+            .m-flashcard.flipped { background: #F0FDF4; border-color: var(--success); }
+            .m-flashcard.flipped .m-tap-hint { display: none; }
+            .m-flashcard.flipped .m-flash-answer { display: block; animation: fadeIn 0.5s ease; }
+
+            .m-checklist-card { background: white; border-radius: 16px; padding: 1.5rem; border: 2px solid var(--primary); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.1); margin-top: 1rem;}
+            .m-check-item { display: flex; gap: 10px; margin-bottom: 12px; font-weight: 700; color: #1E293B; font-size: 0.95rem; align-items: flex-start;}
+            
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         }
     </style>
 </head>
 <body>
 
-    <!-- Fixed Bottom Bar Footer -->
-    <div class="branding-footer">
-        <div>🏢 <strong>Pan Business Lists Pvt. Ltd.</strong> | IT Department (Vikas Rawat)</div>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <span class="iso-badge">🛡️ ISO 27001:2022 Certified</span>
-            <span>🌐 <a href="https://www.panbusiness.net" target="_blank">www.panbusiness.net</a></span>
-        </div>
-    </div>
+    <!-- ========================================================================================= -->
+    <!-- 🖥️ DESKTOP VIEW (CINEMATIC PRESENTATION) -->
+    <!-- ========================================================================================= -->
+    <div class="desktop-view">
+        <div class="blob blob-1"></div> <div class="blob blob-2"></div> <div class="blob blob-3"></div>
+        <div class="d-progress-bar" id="d-progressBar"></div>
 
-    <div class="reveal">
-        <div class="slides">
+        <header class="d-header">
+            <div class="d-header-brand">🏢 Pan Business Lists Pvt. Ltd. <span style="font-size: 0.9rem; color: var(--text-gray); font-weight: 600;">| IT Dept</span></div>
+            <div class="d-meta-pill">
+                <span style="color: var(--primary); background: rgba(79, 70, 229, 0.1); padding: 6px 15px; border-radius: 20px;">🛡️ ISO 27001:2022</span>
+                <span>📅 April 6, 2026</span><span>📍 Noida</span>
+            </div>
+        </header>
 
-            <!-- Title Slide -->
-            <section data-transition="zoom">
-                <div class="modern-card" style="text-align: center; padding: 25px 35px; border-left: none; border-top: 8px solid var(--primary-blue); margin-top: -30px;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2716/2716652.png" alt="Security" style="width: 65px; margin-bottom: 10px;">
+        <div class="d-presentation" id="d-presentation">
+            
+            <!-- SLIDE 1 -->
+            <div class="d-slide">
+                <div class="d-slide-header d-animate d-slide-up">
+                    <span style="background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 12px 30px; border-radius: 30px; font-weight: 900; font-size: 1.1rem; margin-bottom: 2rem; display: inline-block; border: 2px solid rgba(239, 68, 68, 0.2);">🚨 HIGH PRIORITY: PROJECT GDP-207</span>
                     <h1>IT & Data Security Awareness</h1>
-                    <h3 style="color: #636e72; font-size: 1.05em;">In-Depth Training Session for Production Users 👨‍💻👩‍💻</h3>
+                    <p class="d-subtitle" style="font-size: 1.6rem; margin-top: 1rem;">In-Depth Training Session for Production Users 👨‍💻👩‍💻</p>
                     
-                    <div style="margin-top: 15px; display: inline-block; background: var(--light-bg); padding: 6px 20px; border-radius: 50px; font-weight: bold; color: var(--primary-blue); font-size: 0.8em;">
-                        📅 Monday, 6 April 2026 | 📍 PBL Noida
-                    </div>
-                    
-                    <div class="client-alert" style="margin-top: 20px; justify-content: center; text-align: left;">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="Germany" style="width: 45px; margin-right: 15px; border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                        <div>
-                            <strong style="color: var(--accent-red); font-size: 1.05em;">SPECIAL FOCUS: PROJECT GDP-207 (GERMAN CLIENT)</strong><br>
-                            <em style="font-weight: normal; color: #555; font-size: 0.9em;">Humein ensure karna hai ki humari ISO 27001 aur GDPR policies top-notch ho!</em>
-                        </div>
+                    <div style="margin-top: 3.5rem; padding: 25px 40px; background: white; border: 3px solid var(--german); box-shadow: 0 15px 40px rgba(255, 206, 0, 0.2); border-radius: 20px; display: inline-block; max-width: 900px;">
+                        <h3 style="color: #0f172a; font-size: 1.6rem; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 15px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="Germany" style="width: 40px; border-radius: 4px;">
+                            German Client Visit Preparedness
+                        </h3>
+                        <p style="font-size: 1.25rem; font-weight: 600; color: #334155; line-height: 1.6;">Humein ensure karna hai ki humari ISO 27001 aur GDPR policies top-notch ho. Auditors will walk the floor!</p>
                     </div>
                 </div>
-                <div style="text-align: center; width: 100%;"><div class="nav-hint-right">Press RIGHT Arrow (➡️) to Start</div></div>
-            </section>
+                <div class="d-scroll-hint">SCROLL DOWN ↓</div>
+            </div>
 
-            <!-- Agenda Slide -->
-            <section data-transition="slide">
-                <div style="margin-top: -20px;">
+            <!-- SLIDE 2: Training Agenda (FULL SIZED CARDS) -->
+            <div class="d-slide">
+                <div class="d-slide-header d-animate d-slide-up">
                     <h2>📋 Training Agenda (6 Pillars)</h2>
-                    <p style="margin-bottom: 15px; color: #636e72; font-size: 0.85em;">Aaj hum in 6 categories mein total <strong>50 Sequential Points</strong> samjhenge:</p>
+                    <p class="d-subtitle" style="font-size: 1.5rem;">Aaj hum in 6 categories mein total <strong>50 Sequential Points</strong> samjhenge:</p>
+                </div>
+                
+                <div class="d-grid-3">
+                    <div class="d-card primary d-animate d-slide-up" style="transition-delay: 0.1s;">
+                        <h3>🏢 1. Office Discipline</h3>
+                        <p>Punctuality, Clean Desk, ID Cards, aur Tailgating Rules.</p>
+                    </div>
+                    <div class="d-card success d-animate d-slide-up" style="transition-delay: 0.2s;">
+                        <h3>🔐 2. System & Passwords</h3>
+                        <p>System locking, strong passwords, aur No Sticky Notes policy.</p>
+                    </div>
+                    <div class="d-card warning d-animate d-slide-up" style="transition-delay: 0.3s;">
+                        <h3>📁 3. Data Management</h3>
+                        <p>Data storage, secure document disposal (ISO standards).</p>
+                    </div>
+                    <div class="d-card info d-animate d-slide-up" style="transition-delay: 0.4s;">
+                        <h3>🌐 4. Network & Devices</h3>
+                        <p>VPN usage, Public Wi-Fi, Phishing, aur Fake IT Calls.</p>
+                    </div>
+                    <div class="d-card danger d-animate d-slide-up" style="transition-delay: 0.5s;">
+                        <h3>🚨 5. Audits & Incidents</h3>
+                        <p>Auditor ko kaise answer karein, aur 72-Hour Breach Rule.</p>
+                    </div>
+                    <div class="d-card german d-animate d-slide-up" style="transition-delay: 0.6s;">
+                        <h3 style="color: #d35400;"><img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" style="width: 30px; border-radius: 3px;"> 6. GDP-207 & GDPR</h3>
+                        <p>German project ke eToken (OTP) rules aur EU Privacy Laws.</p>
+                    </div>
+                </div>
+                <div class="d-scroll-hint">SCROLL DOWN ↓</div>
+            </div>
+
+            <!-- SLIDE 3: Discipline -->
+            <div class="d-slide">
+                <div class="d-slide-header d-animate d-slide-up">
+                    <h2>🏢 Pillar 1: Office Discipline & Security</h2>
+                    <p class="d-subtitle">Aapka physical behavior aur workspace company ki image define karta hai.</p>
+                </div>
+                <div class="d-grid-full">
+                    <div class="d-card primary d-animate d-slide-left">
+                        <h3>Professionalism & Workspace ✨</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">1</div><div><strong>Arrive on time:</strong> Office time par aana discipline dikhata hai.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">2</div><div><strong>Keep desk clean:</strong> Apni desk organized rakhein; unnecessary papers hata dein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">3</div><div><strong>Daily Habit:</strong> <span style="color:var(--primary); font-weight:bold;">Clean desk & clear screen policy</span></div></div>
+                            <div class="d-point-item"><div class="d-point-num">4</div><div><strong>Wear ID Card:</strong> Apna ID card visibly pehne; anjaan logon se puchen.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">5</div><div><strong>No Escort, No Entry:</strong> Visitors ko akele allow na karein.</div></div>
+                        </div>
+                    </div>
+                    <div class="d-card warning d-animate d-slide-right">
+                        <h3>Handling Info & Access 🤫</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">6</div><div><strong>Be Professional:</strong> Auditors ke sath professional communication rakhein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">7</div><div><strong>No Public Talk:</strong> Company matters ko lift ya cafeteria mein discuss na karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">8</div><div><strong>Secure Disposal:</strong> Confidential printouts ko securely shred karein.</div></div>
+                            <div class="d-point-item danger"><div class="d-point-num">9</div><div><strong style="color:var(--danger);">NO TAILGATING:</strong> Agar aap card swipe karke ghus rahe hain, toh piche aane wale kisi shaks ke liye darwaza hold na karein.</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-scroll-hint">SCROLL DOWN ↓</div>
+            </div>
+
+            <!-- SLIDE 4: Passwords -->
+            <div class="d-slide">
+                <div class="d-slide-header d-animate d-slide-up">
+                    <h2>🔐 Pillar 2: System Access & Passwords</h2>
+                    <p class="d-subtitle">Apne digital workspace aur identity ko secure rakhna.</p>
+                </div>
+                <div class="d-grid-full">
+                    <div class="d-card info d-animate d-slide-left">
+                        <h3>Workstation Security 💻</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">10</div><div><strong>Lock System:</strong> Seat chhodte hi workstation turant lock karein <span style="color:var(--primary); font-weight:bold;">(Win + L)</span>.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">11</div><div><strong>Hide Files:</strong> Screen par confidential files open chhodkar apni seat se na uthein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">12</div><div><strong>No Personal Devices:</strong> Company portals me login ke liye personal devices use na karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">13</div><div><strong>Least Privilege:</strong> Apne role ke hisaab se sirf required data hi access karein.</div></div>
+                        </div>
+                    </div>
+                    <div class="d-card danger d-animate d-slide-right">
+                        <h3>Password Hygiene (Audit Focus) 🔑</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">14</div><div><strong>Never Share:</strong> Passwords kabhi kisi se share na karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">15</div><div><strong>Strong & Unique:</strong> Har account ke liye unique passwords banayein.</div></div>
+                            <div class="d-point-item danger"><div class="d-point-num">16</div><div><strong style="color:var(--danger);">NO STICKY NOTES:</strong> Passwords ko sticky notes ya diaries par bilkul na likhein!</div></div>
+                            <div class="d-point-item"><div class="d-point-num">17</div><div><strong>Leak Suspected?</strong> Immediately change karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">18</div><div><strong>Use MFA:</strong> Multi-factor authentication (MFA) zaroor use karein.</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-scroll-hint">SCROLL DOWN ↓</div>
+            </div>
+
+            <!-- SLIDE 5: Data Management -->
+            <div class="d-slide">
+                <div class="d-slide-header d-animate d-slide-up">
+                    <h2>📁 Pillar 3: Data Management & Storage</h2>
+                    <p class="d-subtitle">ISO 27001 Guidelines for handling company and client data.</p>
+                </div>
+                <div class="d-grid-full">
+                    <div class="d-card success d-animate d-slide-left">
+                        <h3>Where to Store Data? ☁️</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">19</div><div><strong>Approved Devices:</strong> Official work ke liye sirf company-approved devices use karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">20</div><div><strong>Approved Servers:</strong> Company files ko cloud ya approved servers par save karein.</div></div>
+                            <div class="d-point-item danger"><div class="d-point-num">21</div><div><strong style="color:var(--danger);">Strictly Prohibited:</strong> Sensitive data ko personal mobiles ya pen drives mein store na karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">22</div><div><strong>Print/Copy:</strong> Confidential data ko download ya print sirf approval ke sath karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">23</div><div><strong>Clear Desk:</strong> Sensitive documents ko openly visible na chhodein.</div></div>
+                        </div>
+                    </div>
+                    <div class="d-card primary d-animate d-slide-right">
+                        <h3>Data Housekeeping & BCP 🧹</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">24</div><div><strong>Shredding:</strong> Obsolete printouts ko securely shred karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">25</div><div><strong>Clean Folders:</strong> Shared folders se duplicate data regularly remove karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">26</div><div><strong>Save Work:</strong> Important work ko recovery ke liye approved locations par save karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">27</div><div><strong>Official Mail:</strong> Communication sirf professional accounts se karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">28</div><div><strong>BCP Basics:</strong> Outages ke time Business Continuity Plan (BCP) ko samjhein.</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-scroll-hint">SCROLL DOWN ↓</div>
+            </div>
+
+            <!-- SLIDE 6: Network -->
+            <div class="d-slide">
+                <div class="d-slide-header d-animate d-slide-up">
+                    <h2>🌐 Pillar 4: Network & Device Policy</h2>
+                    <p class="d-subtitle">Cyber threats se apne network aur system ko bachana.</p>
+                </div>
+                <div class="d-grid-full">
+                    <div class="d-card info d-animate d-slide-left">
+                        <h3>Networks & USB Policy 🔌</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">29</div><div><strong>Public Wi-Fi:</strong> Public Wi-Fi par official work sirf approved VPN ke sath karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">30</div><div><strong>Remote Work:</strong> Secure connections use karein.</div></div>
+                            <div class="d-point-item danger"><div class="d-point-num">31</div><div><strong style="color:var(--danger);">No Unknown USBs:</strong> Unknown USB drives ko office system se bilkul connect na karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">32</div><div><strong>Approved Tools:</strong> Sirf IT-approved collaboration tools use karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">33</div><div><strong>Phishing Alert:</strong> Unexpected email attachments ko caution ke sath verify karein.</div></div>
+                        </div>
+                    </div>
+                    <div class="d-card warning d-animate d-slide-right">
+                        <h3>Vishing & Prevention 🛡️</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num" style="background:var(--warning);color:white;">34</div><div><strong>VISHING (Voice Phishing):</strong> Agar koi call par khud ko "German Head Office IT" bata kar aapse login ya AnyDesk maange, toh bina IT se verify kiye details na dein!</div></div>
+                            <div class="d-point-item danger"><div class="d-point-num">35</div><div><strong style="color:var(--danger);">Never</strong> disable Firewalls manually.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">36</div><div>Follow-up plan ready rakhein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">37</div><div>Emergency contact accessible rakhein.</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-scroll-hint">SCROLL DOWN ↓</div>
+            </div>
+
+            <!-- SLIDE 7: Audits -->
+            <div class="d-slide">
+                <div class="d-slide-header d-animate d-slide-up">
+                    <h2>🚨 Pillar 5: Incident Response & Audits</h2>
+                    <p class="d-subtitle">When things go wrong, or when Auditors are here!</p>
+                </div>
+                <div class="d-grid-full">
+                    <div class="d-card danger d-animate d-slide-left">
+                        <h3>System Health & GDPR Reporting 📢</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">38</div><div><strong>Updates:</strong> Antivirus aur OS ko updated rakhein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">39</div><div><strong>Restarts:</strong> System restarts sirf tabhi postpone karein jab bahut zaroori ho.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">40</div><div><strong>Incident?</strong> Apna password turant change karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">41</div><div><strong>Report Loss:</strong> Lost laptops/phones immediately report karein.</div></div>
+                            <div class="d-point-item danger"><div class="d-point-num">42</div><div><strong>THE 72-HOUR RULE:</strong> Data breach hone par Client ko 72 hours mein notify karna hota hai. Galti hone par <span style="color:var(--danger);font-weight:bold;">IT ko 5 mins mein batayein!</span></div></div>
+                        </div>
+                    </div>
+                    <div class="d-card primary d-animate d-slide-right">
+                        <h3>Facing the Auditor (Crucial) 🎯</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">43</div><div><strong>No Assumptions:</strong> Audits mein galat info na dein. Answer nahi pata toh bole: <span style="color:var(--primary);font-weight:bold;">"I will check the policy and get back."</span></div></div>
+                            <div class="d-point-item"><div class="d-point-num">44</div><div><strong>Role Clear:</strong> Disruption ke doran aapka role kya hai, clear rahein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">45</div><div><strong>Live the Policy:</strong> Company policy daily follow karein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num">46</div><div><strong>Shared Responsibility:</strong> ISO 27001 Security sabki responsibility hai.</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-scroll-hint">SCROLL DOWN ↓</div>
+            </div>
+            
+            <!-- SLIDE 8: GDP-207 -->
+            <div class="d-slide">
+                <div class="d-slide-header d-animate d-slide-up">
+                    <h2><img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="Germany" style="width: 40px; vertical-align: middle; border-radius:3px;"> Pillar 6: Project GDP-207 & GDPR</h2>
+                    <p class="d-subtitle">German Client Visit ke liye sabse Critical Guidelines.</p>
+                </div>
+                <div class="d-grid-full">
+                    <div class="d-card german d-animate d-slide-left">
+                        <h3>GDP-207 Access Protocol 🌐</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item german"><div class="d-point-num">47</div><div><strong>Strict URL & eToken:</strong> Hum German client system ko ek specific secure URL aur <strong>eTokens (OTP based login)</strong> ke through access karte hain.</div></div>
+                            <div class="d-point-item danger"><div class="d-point-num">48</div><div><strong style="color:var(--danger);">Zero Sharing Policy:</strong> Apna eToken device ya OTP kisi bhi colleague ke sath share karna sakht mana hai. Yeh ek major security breach hai.</div></div>
+                        </div>
+                    </div>
+                    <div class="d-card info d-animate d-slide-right">
+                        <h3><img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" style="width:30px; vertical-align: middle;"> European Data Privacy (GDPR)</h3>
+                        <div class="d-point-list">
+                            <div class="d-point-item"><div class="d-point-num">49</div><div><strong>Data Minimization:</strong> Sirf utna hi personal data extract/process karein jitna task ke liye zaroori ho. Faltu data na nikalein.</div></div>
+                            <div class="d-point-item danger"><div class="d-point-num">50</div><div><strong style="color:var(--danger);">Privacy Breach:</strong> Kisi bhi European citizen ki information ko unapproved local PC par save karna ek criminal offense maana jata hai.</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-scroll-hint">SCROLL DOWN ↓</div>
+            </div>
+
+            <!-- SLIDE 9: Mock Interview (Keyboard Reveal Down Arrow) -->
+            <div class="d-slide" id="slide-mock">
+                <div class="d-slide-header d-animate d-slide-up">
+                    <h2 style="font-size: 3rem;">🎭 Audit Roleplay (Mock Interview)</h2>
+                    <p class="d-subtitle" style="font-size: 1.4rem;">German Auditor aakar aapse sawaal puchh sakta hai. <strong style="color:var(--primary);">Press Down Arrow (⬇️)</strong> to reveal answers.</p>
+                </div>
+                <div style="width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 20px; z-index: 2;">
                     
-                    <div class="grid-3">
-                        <div class="modern-card agenda-card">
-                            <h3>1. Office Discipline 🏢</h3>
-                            <p>Punctuality, Clean Desk, ID Cards, aur Tailgating Rules.</p>
+                    <div class="d-card purple d-animate d-slide-up d-qa-card">
+                        <h3 style="color: var(--purple); font-size: 1.6rem; margin: 0;">Q1: "What will you do if you find an unknown USB drive in the cafeteria?"</h3>
+                        <div class="d-click-hint">Press ⬇️ to Reveal</div>
+                        <div class="d-answer-box"><p style="color: var(--success); font-weight: 800; font-size: 1.3rem;">✔️ Answer: I will NOT plug it into my computer. I will hand it over to the IT Department immediately.</p></div>
+                    </div>
+
+                    <div class="d-card purple d-animate d-slide-up d-qa-card" style="transition-delay:0.1s">
+                        <h3 style="color: var(--purple); font-size: 1.6rem; margin: 0;">Q2: "Where do you write your passwords?"</h3>
+                        <div class="d-click-hint">Press ⬇️ to Reveal</div>
+                        <div class="d-answer-box"><p style="color: var(--success); font-weight: 800; font-size: 1.3rem;">✔️ Answer: I do not write them anywhere. I memorize them and use MFA.</p></div>
+                    </div>
+
+                    <div class="d-card purple d-animate d-slide-up d-qa-card" style="transition-delay:0.2s">
+                        <h3 style="color: var(--purple); font-size: 1.6rem; margin: 0;">Q3: "How do you login to the GDP-207 portal?"</h3>
+                        <div class="d-click-hint">Press ⬇️ to Reveal</div>
+                        <div class="d-answer-box"><p style="color: var(--success); font-weight: 800; font-size: 1.3rem;">✔️ Answer: Using the approved URL and my personal eToken (OTP), which I never share.</p></div>
+                    </div>
+
+                </div>
+                <div class="d-scroll-hint">Reveal all to continue ↓</div>
+            </div>
+
+            <!-- SLIDE 10: Conclusion (Fixed & Visible) -->
+            <div class="d-slide">
+                <div class="d-slide-header d-animate d-slide-up" style="max-width: 1000px; width: 100%;">
+                    <h1 style="font-size: 4rem; display: flex; align-items: center; justify-content: center; gap: 15px;">🏆 Let's Make the Audit a Success!</h1>
+                    
+                    <div style="background: white; border: 2px solid var(--primary); border-radius: 20px; padding: 2.5rem 3rem; box-shadow: 0 10px 40px rgba(79, 70, 229, 0.08); margin-top: 2rem; text-align: left;">
+                        <h3 style="font-size: 1.8rem; color: var(--primary); margin-bottom: 1.5rem; font-weight: 900;">🚀 Monday Morning Checklist:</h3>
+                        <div class="d-point-list" style="font-size: 1.3rem; color: var(--text-dark); gap: 18px;">
+                            <div class="d-point-item"><div class="d-point-num" style="background:var(--success); color:white;">✓</div><div>Apni desk bilkul clean rakhein (No papers/notebooks).</div></div>
+                            <div class="d-point-item"><div class="d-point-num" style="background:var(--success); color:white;">✓</div><div>Seat se uthne par `Win + L` dabana na bhoolein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num" style="background:var(--success); color:white;">✓</div><div>Password likhe hue Sticky Notes turant phenk dein.</div></div>
+                            <div class="d-point-item"><div class="d-point-num" style="background:var(--danger); color:white;">✓</div><div><strong style="color:var(--danger);">GDP-207 eToken (OTP) login STRICTLY khud handle karein.</strong></div></div>
                         </div>
-                        <div class="modern-card card-green agenda-card">
-                            <h3>2. System & Passwords 🔐</h3>
-                            <p>System locking, strong passwords, aur No Sticky Notes policy.</p>
-                        </div>
-                        <div class="modern-card card-orange agenda-card">
-                            <h3>3. Data Management 📁</h3>
-                            <p>Data storage, secure document disposal (ISO standards).</p>
-                        </div>
-                        <div class="modern-card card-red agenda-card">
-                            <h3>4. Network & Devices 🌐</h3>
-                            <p>VPN usage, Public Wi-Fi, Phishing, aur Fake IT Calls.</p>
-                        </div>
-                        <div class="modern-card card-purple agenda-card">
-                            <h3>5. Audits & Incidents 🚨</h3>
-                            <p>Auditor ko kaise answer karein, aur 72-Hour Breach Rule.</p>
-                        </div>
-                        <div class="modern-card card-german agenda-card" style="box-shadow: 0 0 15px rgba(255, 206, 0, 0.2);">
-                            <h3 style="color: #d35400;"><img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" style="width: 20px; vertical-align: middle; margin-right: 5px;"> 6. GDP-207 & GDPR</h3>
-                            <p>German project ke eToken (OTP) rules aur European Privacy Laws.</p>
-                        </div>
+                    </div>
+
+                    <div style="margin-top: 3rem; display: flex; align-items: center; justify-content: center; gap: 30px;">
+                        <h2 style="margin: 0; color: var(--warning); font-size: 2.8rem;">🙋‍♂️ Q & A Session</h2>
+                        <div style="background: var(--german); color: black; font-weight: 900; font-size: 1.5rem; padding: 12px 25px; border-radius: 40px; box-shadow: 0 5px 15px rgba(255, 206, 0, 0.4); animation: bounce 2s infinite;">🎁 + LIVE QUIZ</div>
                     </div>
                 </div>
-                <div style="text-align: center; width: 100%;"><div class="nav-hint-right">Press RIGHT Arrow (➡️) to continue</div></div>
-            </section>
-
-            <!-- SECTION 1: Office Discipline -->
-            <section>
-                <section data-background-image="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" data-background-opacity="0.1" data-transition="convex">
-                    <div class="image-bg-section">
-                        <h2>🏢 Pillar 1: Office Discipline & Security</h2>
-                        <p style="font-size: 1.05em; color: #636e72;">Aapka physical behavior aur workspace company ki image define karta hai.</p>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow for Points 1 to 9</div></div>
-                </section>
-                
-                <section data-transition="fade">
-                    <h3>Professionalism & Clean Workspace ✨</h3>
-                    <div class="grid-2">
-                        <div class="modern-card">
-                            <div class="point-item"><span class="point-num">1</span> <div><span class="emoji-icon">⏰</span> <strong>Arrive on time:</strong> Office time par aana discipline dikhata hai.</div></div>
-                            <div class="point-item"><span class="point-num">2</span> <div><span class="emoji-icon">🧹</span> <strong>Keep desk clean:</strong> Apni desk organized rakhein; unnecessary papers hata dein.</div></div>
-                            <div class="point-item"><span class="point-num">3</span> <div><span class="emoji-icon">📌</span> <strong>Daily Habit:</strong> <span class="highlight">Clean desk & clear screen policy</span></div></div>
-                        </div>
-                        <div class="modern-card card-green">
-                            <div class="point-item"><span class="point-num">4</span> <div><span class="emoji-icon">🪪</span> <strong>Wear ID Card:</strong> Apna ID card visibly pehne; anjaan logon se puchen.</div></div>
-                            <div class="point-item"><span class="point-num">5</span> <div><span class="emoji-icon">🚫</span> <strong>No Escort, No Entry:</strong> Visitors ko restricted areas mein akele allow na karein.</div></div>
-                            <div class="point-item"><span class="point-num">6</span> <div><span class="emoji-icon">🤝</span> <strong>Be Professional:</strong> Colleagues aur <span class="highlight">auditors</span> ke sath professional communication rakhein.</div></div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>Handling Sensitive Info & Access Control 🤫</h3>
-                    <div class="grid-2">
-                        <div class="modern-card card-orange">
-                            <div class="point-item"><span class="point-num">7</span> <div><span class="emoji-icon">🤐</span> <strong>No Public Discussion:</strong> Company matters ko lift ya cafeteria mein discuss na karein.</div></div>
-                            <div class="point-item"><span class="point-num">8</span> <div><span class="emoji-icon">🖨️</span> <strong>Secure Disposal:</strong> Confidential printouts ko <span class="success">securely shred</span> karein.</div></div>
-                        </div>
-                        <div class="modern-card card-red" style="border-left-width: 8px;">
-                            <div class="point-item"><span class="point-num" style="background: var(--accent-red); color: white;">9</span> <div><span class="emoji-icon">🚪</span> <strong>NO TAILGATING:</strong> Agar aap access card swipe karke ghus rahe hain, toh <span class="alert">piche aane wale kisi shaks ke liye darwaza hold na karein</span>.</div></div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
-                </section>
-            </section>
-
-            <!-- SECTION 2: System Access -->
-            <section>
-                <section data-background-image="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" data-background-opacity="0.1" data-transition="convex">
-                    <div class="image-bg-section">
-                        <h2>🔐 Pillar 2: System Access & Passwords</h2>
-                        <p style="font-size: 1.05em; color: #636e72;">Apne digital workspace aur identity ko secure rakhna.</p>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow for Points 10 to 18</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>Workstation Security 💻</h3>
-                    <div class="grid-2">
-                        <div class="modern-card">
-                            <div class="point-item"><span class="point-num">10</span> <div><span class="emoji-icon">🔒</span> <strong>Lock System:</strong> Seat chhodte hi workstation turant lock karein <span class="highlight">(Win + L)</span>.</div></div>
-                            <div class="point-item"><span class="point-num">11</span> <div><span class="emoji-icon">🖥️</span> <strong>Hide Files:</strong> Screen par confidential files open chhodkar apni seat se na uthein.</div></div>
-                        </div>
-                        <div class="modern-card card-red">
-                            <div class="point-item"><span class="point-num">12</span> <div><span class="emoji-icon">📱</span> <strong>No Personal Devices:</strong> Company portals me login ke liye personal devices use na karein.</div></div>
-                            <div class="point-item"><span class="point-num">13</span> <div><span class="emoji-icon">🧠</span> <strong>Least Privilege:</strong> Apne role ke hisaab se <span class="success">sirf required data</span> hi access karein.</div></div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>Password Management Masterclass 🔑</h3>
-                    <div class="client-alert" style="margin-bottom: 15px; border-left-color: var(--accent-red);">
-                        <span>⚠️</span> <strong>Auditor Checkpoint:</strong> German auditors sabse pehle desks par Sticky Notes check karte hain!
-                    </div>
-                    <div class="grid-2">
-                        <div class="modern-card card-orange">
-                            <div class="point-item"><span class="point-num">14</span> <div><span class="emoji-icon">🚫</span> <strong>Never Share:</strong> Passwords kabhi kisi se share na karein, even with managers.</div></div>
-                            <div class="point-item"><span class="point-num">15</span> <div><span class="emoji-icon">🛡️</span> <strong>Strong & Unique:</strong> Har account ke liye strong aur unique passwords banayein.</div></div>
-                            <div class="point-item"><span class="point-num" style="background: var(--accent-red); color: white;">16</span> <div><span class="emoji-icon">📝</span> <strong>NO STICKY NOTES:</strong> <span class="alert">Passwords ko sticky notes ya diaries par bilkul na likhein!</span></div></div>
-                        </div>
-                        <div class="modern-card card-green">
-                            <div class="point-item"><span class="point-num">17</span> <div><span class="emoji-icon">🚨</span> <strong>Leak Suspected?</strong> Agar password leak ka doubt ho, toh immediately change karein.</div></div>
-                            <div class="point-item"><span class="point-num">18</span> <div><span class="emoji-icon">📲</span> <strong>Use MFA:</strong> Jahan bhi available ho, Multi-factor authentication (MFA) zaroor use karein.</div></div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
-                </section>
-            </section>
-
-            <!-- SECTION 3: Data Management -->
-            <section>
-                <section data-background-color="#fdfbfb" data-transition="convex">
-                    <div class="image-bg-section">
-                        <h2>📁 Pillar 3: Data Management & Storage</h2>
-                        <p style="font-size: 1.05em; color: #636e72;">ISO 27001 Guidelines for handling company data.</p>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow for Points 19 to 28</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>Where to Store Data? ☁️</h3>
-                    <div class="modern-card">
-                        <div class="point-item"><span class="point-num">19</span> <div><span class="emoji-icon">✅</span> <strong>Approved Devices:</strong> Official work ke liye sirf <span class="success">company-approved devices</span> use karein.</div></div>
-                        <div class="point-item"><span class="point-num">20</span> <div><span class="emoji-icon">☁️</span> <strong>Approved Servers:</strong> Company files ko sirf approved servers ya cloud platforms par save karein.</div></div>
-                        <div class="point-item"><span class="point-num">21</span> <div><span class="emoji-icon">❌</span> <span class="alert">Strictly Prohibited:</span> Sensitive data ko personal mobiles ya pen drives mein store na karein.</div></div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>Data Handling & BCP 🔄</h3>
-                    <div class="grid-2">
-                        <div class="modern-card card-orange">
-                            <div class="point-item"><span class="point-num">22</span> <div><span class="emoji-icon">📄</span> Confidential data ko copy, download ya print <span class="highlight">sirf approval</span> ke sath karein.</div></div>
-                            <div class="point-item"><span class="point-num">23</span> <div><span class="emoji-icon">👀</span> Sensitive documents ko openly visible na chhodein.</div></div>
-                            <div class="point-item"><span class="point-num">24</span> <div><span class="emoji-icon">🗑️</span> Obsolete printouts ko securely shred karein.</div></div>
-                        </div>
-                        <div class="modern-card card-green">
-                            <div class="point-item"><span class="point-num">25</span> <div><span class="emoji-icon">📂</span> Shared folders se duplicate data regularly remove karein.</div></div>
-                            <div class="point-item"><span class="point-num">26</span> <div><span class="emoji-icon">💾</span> Important work ko approved locations par regularly save karein.</div></div>
-                            <div class="point-item"><span class="point-num">28</span> <div><span class="emoji-icon">⚡</span> <strong>BCP Basics:</strong> Outages ke time Business Continuity Plan (BCP) ke basics ko samjhein.</div></div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
-                </section>
-            </section>
-
-            <!-- SECTION 4: Network & Device Policy -->
-            <section>
-                <section data-background-image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" data-background-opacity="0.1" data-transition="convex">
-                     <div class="image-bg-section">
-                        <h2>🌐 Pillar 4: Network & Device Policy</h2>
-                        <p style="font-size: 1.05em; color: #636e72;">Cyber threats se apne network aur system ko bachana.</p>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow for Points 29 to 37</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>Networks & USB Policy 🔌</h3>
-                    <div class="grid-2">
-                        <div class="modern-card">
-                            <div class="point-item"><span class="point-num">29</span> <div><span class="emoji-icon">📶</span> <strong>Public Wi-Fi:</strong> Public Wi-Fi par official work sirf approved security controls (VPN) ke sath karein.</div></div>
-                            <div class="point-item"><span class="point-num">30</span> <div><span class="emoji-icon">🌍</span> <strong>Remote Work:</strong> Ghar se kaam karte time sirf VPN aur secure connections use karein.</div></div>
-                        </div>
-                        <div class="modern-card card-red">
-                            <div class="point-item"><span class="point-num">31</span> <div><span class="emoji-icon">🛑</span> <strong>No Unknown USBs:</strong> <span class="alert">Unknown USB drives</span> ko office system se bilkul connect na karein.</div></div>
-                            <div class="point-item"><span class="point-num">32</span> <div><span class="emoji-icon">🛠️</span> <strong>Approved Tools:</strong> Sirf IT-approved collaboration tools use karein.</div></div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>Phishing, Vishing & Prevention 🛡️</h3>
-                    <div class="modern-card card-orange">
-                        <div class="point-item"><span class="point-num">33</span> <div><span class="emoji-icon">📎</span> <strong>Phishing Alert:</strong> Unknown senders se aayi unexpected email attachments ko bahut caution ke sath verify karein.</div></div>
-                        <div class="point-item"><span class="point-num" style="background: var(--accent-orange); color: white;">34</span> <div><span class="emoji-icon">📞</span> <strong>VISHING (Voice Phishing):</strong> Agar koi call par khud ko "German Head Office IT" bata kar aapse login ya AnyDesk maange, toh bina IT se verify kiye details na dein!</div></div>
-                    </div>
-                    <div class="grid-3" style="margin-top:10px;">
-                        <div class="modern-card" style="padding:10px 15px;"><div class="point-item" style="margin:0;"><span class="point-num">35</span> <div><span class="alert">Never</span> disable Firewalls.</div></div></div>
-                        <div class="modern-card" style="padding:10px 15px;"><div class="point-item" style="margin:0;"><span class="point-num">36</span> <div>Follow-up plan ready rakhein.</div></div></div>
-                        <div class="modern-card" style="padding:10px 15px;"><div class="point-item" style="margin:0;"><span class="point-num">37</span> <div>Emergency contact accessible.</div></div></div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Next Pillar</div></div>
-                </section>
-            </section>
-
-            <!-- SECTION 5: Incidents & Audits -->
-            <section>
-                <section data-background-color="#fdfbfb" data-transition="convex">
-                    <div class="image-bg-section">
-                        <h2>🚨 Pillar 5: Incident Response & Audits</h2>
-                        <p style="font-size: 1.05em; color: #636e72;">When things go wrong, or when Auditors are here!</p>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow for Points 38 to 46</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>System Health & Reporting 📢</h3>
-                    <div class="grid-2">
-                        <div class="modern-card">
-                            <div class="point-item"><span class="point-num">38</span> <div><span class="emoji-icon">🔄</span> <strong>Updates:</strong> Antivirus aur OS ko hamesha updated rakhein.</div></div>
-                            <div class="point-item"><span class="point-num">39</span> <div><span class="emoji-icon">♻️</span> <strong>Restarts:</strong> System restarts sirf tabhi postpone karein jab bahut zaroori ho.</div></div>
-                            <div class="point-item"><span class="point-num">40</span> <div><span class="emoji-icon">⚠️</span> <strong>Incident Suspected?</strong> Apna password turant change karein.</div></div>
-                        </div>
-                        <div class="modern-card card-red">
-                            <div class="point-item"><span class="point-num">41</span> <div><span class="emoji-icon">📦</span> <strong>Report Loss:</strong> Lost laptops, phones ko immediately report karein.</div></div>
-                            <div class="point-item" style="margin-top: 10px;"><span class="point-num" style="background: var(--accent-red); color: white;">42</span> 
-                                <div><span class="emoji-icon">⏱️</span> <strong>THE 72-HOUR GDPR RULE:</strong> Data breach hone par 72 hours ke andar Client ko notify karna hota hai. Galti hone par chupayein nahi, <span class="alert">IT ko 5 mins mein batayein!</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>Facing the Auditor (Crucial) 🎯</h3>
-                    <div class="client-alert" style="margin-bottom: 20px;">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="Germany" style="width: 35px; margin-right: 15px; border-radius: 3px;">
-                        <strong>German Client Audit Guideline:</strong> Be Confident. Be Honest. Stick to the Policy.
-                    </div>
-                    <div class="modern-card card-purple" style="border-left-color: var(--accent-purple);">
-                        <div class="point-item"><span class="point-num">43</span> <div><span class="emoji-icon">❓</span> <strong>No Assumptions:</strong> Audits ke time galat info na dein. Answer nahi pata toh bole: <span class="highlight">"I will check the company policy and get back to you."</span></div></div>
-                        <div class="point-item"><span class="point-num">44</span> <div><span class="emoji-icon">🎤</span> Business disruption ke doran aapka kya role hai, is bare mein clear rahein.</div></div>
-                        <div class="point-item"><span class="point-num">45</span> <div><span class="emoji-icon">📖</span> <strong>Live the Policy:</strong> Company policy sirf padhne ke liye nahi hai; ise daily follow karein.</div></div>
-                        <div class="point-item"><span class="point-num">46</span> <div><span class="emoji-icon">🤝</span> <strong>Shared Responsibility:</strong> ISO 27001 Security <span class="highlight">sabki responsibility hai</span>, sirf IT department ki nahi!</div></div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Final Pillar</div></div>
-                </section>
-            </section>
-
-            <!-- SECTION 6: GDP-207 & GDPR -->
-            <section>
-                <section data-background-image="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" data-background-opacity="0.1" data-transition="zoom">
-                    <div class="image-bg-section" style="border-left: 10px solid var(--german-gold);">
-                        <h2><img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="Germany" style="width: 40px; vertical-align: middle; margin-right: 10px; border-radius: 3px; margin-bottom: 5px;"> Pillar 6: Project GDP-207 & GDPR</h2>
-                        <p style="font-size: 1.05em; color: #636e72;">German Client Visit ke liye sabse Critical Guidelines.</p>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow for Points 47 to 50</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>GDP-207 Access Protocol 🌐</h3>
-                    <div class="modern-card card-german" style="width: 85%; margin: auto;">
-                        <p style="color: #d35400; font-weight: bold; margin-bottom: 15px;">For users working on the German System:</p>
-                        <div class="point-item"><span class="point-num" style="background: var(--german-gold); color: #000;">47</span> 
-                            <div>
-                                <span class="emoji-icon">🔐</span> <strong>Strict URL & eToken Login:</strong> Hum German client system ko ek specific secure URL aur <strong>eTokens (OTP based login)</strong> ke through access karte hain. 
-                            </div>
-                        </div>
-                        <div class="point-item"><span class="point-num" style="background: var(--accent-red); color: white;">48</span> 
-                            <div>
-                                <span class="emoji-icon">🛑</span> <strong>Zero Sharing Policy:</strong> <span class="alert">Apna eToken device ya OTP kisi bhi colleague ke sath share karna sakht mana hai.</span> Yeh ek major security breach hai.
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-down">⬇️ Press DOWN Arrow for GDPR Rules</div></div>
-                </section>
-
-                <section data-transition="fade">
-                    <h3>🇪🇺 European Data Privacy (GDPR)</h3>
-                    <div class="grid-2">
-                        <div class="modern-card card-green">
-                            <div class="point-item">
-                                <span class="point-num" style="background: #0f4b9b;"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" style="width:16px;"></span> 
-                                <div>
-                                    <span class="emoji-icon">🎯</span> <strong>Data Minimization:</strong> Sirf utna hi personal data extract/process karein jitna task ke liye zaroori ho. Faltu data extract na karein.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modern-card card-red">
-                            <div class="point-item"><span class="point-num" style="background: var(--accent-red); color: white;">50</span> 
-                                <div>
-                                    <span class="emoji-icon">👁️</span> <strong>Privacy Breach:</strong> Kisi bhi European citizen ki information ko unapproved local PC par save karna ek <span class="alert">criminal offense</span> maana jata hai.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Roleplay & Quiz</div></div>
-                </section>
-            </section>
-
-            <!-- SECTION 7: Audit Roleplay -->
-            <section data-transition="zoom">
-                <h2 style="margin-bottom: 5px;">🎭 Audit Roleplay (Mock Interview)</h2>
-                <p style="margin-bottom: 12px; font-size: 0.85em; color: #636e72;">German Auditor aakar aapse achanak yeh sawaal puchh sakta hai. Sochiye aap kya jawab denge?</p>
-                
-                <div class="modern-card card-purple" style="padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.1);">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 3px; font-size: 1.05em;">Q1: "What will you do if you find an unknown USB drive in the cafeteria?"</h3>
-                    <p class="fragment" style="margin: 0; color: var(--accent-green); font-weight: bold; font-size: 0.85em;">✔️ Answer: I will NOT plug it into my computer. I will hand it over to the IT Department immediately.</p>
-                </div>
-
-                <div class="modern-card card-purple" style="padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.1);">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 3px; font-size: 1.05em;">Q2: "Where do you write your passwords?"</h3>
-                    <p class="fragment" style="margin: 0; color: var(--accent-green); font-weight: bold; font-size: 0.85em;">✔️ Answer: I do not write them anywhere. I memorize them and use MFA.</p>
-                </div>
-
-                <div class="modern-card card-purple" style="padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.1);">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 3px; font-size: 1.05em;">Q3: "How do you login to the GDP-207 portal?"</h3>
-                    <p class="fragment" style="margin: 0; color: var(--accent-green); font-weight: bold; font-size: 0.85em;">✔️ Answer: Using the approved URL and my personal eToken (OTP), which I never share.</p>
-                </div>
-                <div style="text-align: center; width: 100%;"><div class="nav-hint-right">➡️ Press RIGHT Arrow for Final Summary</div></div>
-            </section>
-
-            <!-- Conclusion & QA & QUIZ -->
-            <section data-transition="zoom" style="text-align: center;">
-                <img src="https://cdn-icons-png.flaticon.com/512/1904/1904425.png" alt="Success" style="width: 60px; margin-bottom: 5px;">
-                <h1 style="font-size: 1.8em; margin-bottom: 5px; color: var(--accent-green);">Let's Make the Audit a Success! 🏆</h1>
-                
-                <div class="modern-card" style="display: inline-block; text-align: left; margin-top: 5px; padding: 12px 25px;">
-                    <h3 style="color: var(--primary-blue); border-bottom: none; margin-bottom: 5px; font-size: 1.05em;">🚀 Monday Morning Checklist:</h3>
-                    <ul style="font-size: 0.8em; line-height: 1.4; color: #2d3436; list-style: none; padding-left: 0; margin-bottom: 0;">
-                        <li>✅ Apni desk bilkul clean rakhein (No papers/notebooks).</li>
-                        <li>✅ Seat se uthne par `Win + L` dabana na bhoolein.</li>
-                        <li>✅ Password likhe hue Sticky Notes turant phenk dein.</li>
-                        <li><span style="color:var(--accent-red); font-weight:bold;">✅ GDP-207 eToken (OTP) login STRICTLY khud handle karein.</span></li>
-                    </ul>
-                </div>
-                
-                <div style="margin-top: 15px;">
-                    <h2 style="color: var(--accent-orange); font-size: 1.5em; border: none; display: inline-block; margin-right: 15px; margin-bottom: 0;">Q & A Session 🙋‍♂️</h2>
-                    <span style="font-size: 1.1em; background: var(--german-gold); padding: 4px 12px; border-radius: 8px; font-weight: bold; color: black;">+ LIVE QUIZ 🎁</span>
-                </div>
-                <p style="font-size: 0.7em; color: #636e72; margin-top: 10px;">Prepared by IT Department (Vikas Rawat)</p>
-            </section>
+            </div>
 
         </div>
     </div>
 
-    <!-- Reveal.js Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+
+    <!-- ========================================================================================= -->
+    <!-- 📱 MOBILE VIEW (NATIVE APP STYLE - ACCORDIONS & ALL 50 POINTS) -->
+    <!-- ========================================================================================= -->
+    <div class="mobile-view">
+        
+        <!-- App Header -->
+        <div class="m-header">
+            <div class="m-header-title">PBL Security 2026</div>
+            <div class="m-header-sub">
+                <span>🛡️ ISO 27001:2022</span>
+                <span>📍 Noida</span>
+            </div>
+        </div>
+
+        <!-- App Hero -->
+        <div class="m-hero">
+            <div class="m-badge">HIGH PRIORITY</div>
+            <h1 style="font-size: 1.8rem; font-weight: 900; color: #0F172A; margin-bottom:10px;">IT & Data Security</h1>
+            <p style="color: #64748B; font-weight: 600; font-size: 0.95rem;">Equipping production users for the audit.</p>
+            
+            <div class="m-gdp-alert" style="background: #FEFCE8; border: 2px solid var(--german); padding: 1rem; border-radius: 12px; margin-top: 15px; text-align: left;">
+                <h3 style="font-size: 1rem; color: #B45309; display: flex; align-items: center; gap: 8px; margin-bottom: 5px;"><img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" style="width: 20px; border-radius: 2px;"> Project GDP-207</h3>
+                <p style="font-size: 0.85rem; color: #78350F; font-weight: 600;">German client visit preparation. 100% Policy adherence required.</p>
+            </div>
+        </div>
+
+        <div class="m-container" style="padding: 1.5rem 5%;">
+            <h2 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 5px; color: #0F172A;">Training Modules (50 Points)</h2>
+            <p style="font-size: 0.85rem; color: #64748B; margin-bottom: 1rem; font-weight: 600;">Tap a module to expand and read the rules.</p>
+
+            <!-- ACCORDION 1: Office Discipline (1-9) -->
+            <div class="m-accordion-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #E2E8F0;">
+                <div class="m-accordion-header" style="padding: 1.2rem; display: flex; justify-content: space-between; font-weight: 800; font-size: 1rem;" onclick="toggleAccordion(this)">
+                    <div style="display:flex; gap:10px;">🏢 1. Office Discipline</div><div class="m-chevron" style="color:var(--primary);">↓</div>
+                </div>
+                <div class="m-accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #F8FAFC; border-top: 1px solid #E2E8F0;">
+                    <div style="padding: 1.2rem; display: flex; flex-direction: column; gap: 12px;">
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">1</div><div><strong>Arrive on time:</strong> Discipline dikhata hai.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">2</div><div><strong>Clean desk:</strong> Unnecessary papers hata dein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">3</div><div><strong>Daily Habit:</strong> Clean desk & clear screen.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">4</div><div><strong>Wear ID:</strong> Visibly pehne; puchen agar anjaan ho.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">5</div><div><strong>No Escort, No Entry:</strong> Visitors ko akele na chhodein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">6</div><div><strong>Professional:</strong> Auditors ke sath communication.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">7</div><div><strong>No Public Talk:</strong> Lift/Cafe mein discuss na karein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">8</div><div><strong>Secure Disposal:</strong> Printouts securely shred karein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:#FEF2F2;border:2px solid var(--danger);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--danger);">9</div><div><strong style="color:var(--danger);">NO TAILGATING:</strong> Darwaza hold na karein.</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCORDION 2: System & Passwords (10-18) -->
+            <div class="m-accordion-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #E2E8F0;">
+                <div class="m-accordion-header" style="padding: 1.2rem; display: flex; justify-content: space-between; font-weight: 800; font-size: 1rem;" onclick="toggleAccordion(this)">
+                    <div style="display:flex; gap:10px;">🔐 2. System & Passwords</div><div class="m-chevron" style="color:var(--primary);">↓</div>
+                </div>
+                <div class="m-accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #F8FAFC; border-top: 1px solid #E2E8F0;">
+                    <div style="padding: 1.2rem; display: flex; flex-direction: column; gap: 12px;">
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">10</div><div><strong>Lock System:</strong> Win+L always.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">11</div><div><strong>Hide Files:</strong> Open na chhodein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">12</div><div><strong>No Personal Devices:</strong> For portals.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">13</div><div><strong>Least Privilege:</strong> Sirf needed data access karein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">14</div><div><strong>Never Share:</strong> Passwords to anyone.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">15</div><div><strong>Strong & Unique:</strong> Use complex passwords.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:#FEF2F2;border:2px solid var(--danger);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--danger);">16</div><div><strong style="color:var(--danger);">NO STICKY NOTES:</strong> Diaries par na likhein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">17</div><div><strong>Leak Suspected:</strong> Change immediately.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">18</div><div><strong>Use MFA:</strong> Always on.</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCORDION 3: Data Management (19-28) -->
+            <div class="m-accordion-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #E2E8F0;">
+                <div class="m-accordion-header" style="padding: 1.2rem; display: flex; justify-content: space-between; font-weight: 800; font-size: 1rem;" onclick="toggleAccordion(this)">
+                    <div style="display:flex; gap:10px;">📁 3. Data Management</div><div class="m-chevron" style="color:var(--primary);">↓</div>
+                </div>
+                <div class="m-accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #F8FAFC; border-top: 1px solid #E2E8F0;">
+                    <div style="padding: 1.2rem; display: flex; flex-direction: column; gap: 12px;">
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">19</div><div><strong>Approved Devices:</strong> Sirf work devices.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">20</div><div><strong>Approved Servers:</strong> Cloud/Servers par save.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:#FEF2F2;border:2px solid var(--danger);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--danger);">21</div><div><strong style="color:var(--danger);">No Personal Drives:</strong> Mobile/Pen drives banned.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">22</div><div><strong>Print/Copy:</strong> Sirf approval se.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">23</div><div><strong>Clear Desk:</strong> Documents visible na ho.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">24</div><div><strong>Shredding:</strong> Obsolete printouts destroy karein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">25</div><div><strong>Clean Folders:</strong> Duplicate data remove karein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">26</div><div><strong>Save Work:</strong> Recovery ke liye save rakhein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">27</div><div><strong>Official Mail:</strong> Sirf professional account use.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">28</div><div><strong>BCP Basics:</strong> Outages plan samjhein.</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCORDION 4: Network & Devices (29-37) -->
+            <div class="m-accordion-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #E2E8F0;">
+                <div class="m-accordion-header" style="padding: 1.2rem; display: flex; justify-content: space-between; font-weight: 800; font-size: 1rem;" onclick="toggleAccordion(this)">
+                    <div style="display:flex; gap:10px;">🌐 4. Network & Devices</div><div class="m-chevron" style="color:var(--primary);">↓</div>
+                </div>
+                <div class="m-accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #F8FAFC; border-top: 1px solid #E2E8F0;">
+                    <div style="padding: 1.2rem; display: flex; flex-direction: column; gap: 12px;">
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">29</div><div><strong>Public Wi-Fi:</strong> VPN ke sath hi use karein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">30</div><div><strong>Remote Work:</strong> Secure connections mandatory.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:#FEF2F2;border:2px solid var(--danger);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--danger);">31</div><div><strong style="color:var(--danger);">No Unknown USBs:</strong> Never connect to PC.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">32</div><div><strong>Approved Tools:</strong> Collaboration tools.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">33</div><div><strong>Phishing Alert:</strong> Unexpected attachments.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:#FEF2F2;border:2px solid var(--danger);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--danger);">34</div><div><strong style="color:var(--danger);">VISHING:</strong> Fake IT calls ko details na dein!</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:#FEF2F2;border:2px solid var(--danger);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--danger);">35</div><div><strong style="color:var(--danger);">Never disable Firewalls.</strong></div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">36</div><div><strong>Follow-up plan:</strong> Disruptions ke liye.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">37</div><div><strong>Emergency Contact:</strong> Accessible rakhein.</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCORDION 5: Audits & Incidents (38-46) -->
+            <div class="m-accordion-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #E2E8F0;">
+                <div class="m-accordion-header" style="padding: 1.2rem; display: flex; justify-content: space-between; font-weight: 800; font-size: 1rem;" onclick="toggleAccordion(this)">
+                    <div style="display:flex; gap:10px;">🚨 5. Audits & Incidents</div><div class="m-chevron" style="color:var(--primary);">↓</div>
+                </div>
+                <div class="m-accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #F8FAFC; border-top: 1px solid #E2E8F0;">
+                    <div style="padding: 1.2rem; display: flex; flex-direction: column; gap: 12px;">
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">38</div><div><strong>Updates:</strong> Antivirus & OS updated.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">39</div><div><strong>Restarts:</strong> Install patches.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">40</div><div><strong>Incident:</strong> Password turant change.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">41</div><div><strong>Report Loss:</strong> Devices IT ko batayein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:#FEF2F2;border:2px solid var(--danger);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--danger);">42</div><div><strong style="color:var(--danger);">72-HOUR RULE:</strong> Breach IT ko 5 mins me batayein!</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">43</div><div><strong>No Assumptions:</strong> Auditor ko ghalat info na dein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">44</div><div><strong>Role Clear:</strong> Disruption mein role.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">45</div><div><strong>Live the Policy:</strong> Daily follow karein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#475569;"><div class="m-point-num" style="min-width:24px;height:24px;background:white;border:2px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--primary);">46</div><div><strong>Shared Duty:</strong> ISO 27001 sabki responsibility.</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCORDION 6: GDP-207 & GDPR (47-50) -->
+            <div class="m-accordion-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #E2E8F0;">
+                <div class="m-accordion-header" style="padding: 1.2rem; display: flex; justify-content: space-between; font-weight: 800; font-size: 1rem; background: #FEFCE8; color: #92400E;" onclick="toggleAccordion(this)">
+                    <div style="display:flex; gap:10px; align-items:center;"><img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" style="width: 20px;"> 6. GDP-207 & GDPR</div><div class="m-chevron" style="color:#92400E;">↓</div>
+                </div>
+                <div class="m-accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #FFFBEB; border-top: 1px solid #FEF08A;">
+                    <div style="padding: 1.2rem; display: flex; flex-direction: column; gap: 12px;">
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#78350F;"><div class="m-point-num" style="min-width:24px;height:24px;background:var(--german);color:black;border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;">47</div><div><strong>Strict URL & eToken:</strong> OTP based login mandatory.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#78350F;"><div class="m-point-num" style="min-width:24px;height:24px;background:#FEF2F2;color:var(--danger);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;">48</div><div><strong style="color:var(--danger);">Zero Sharing Policy:</strong> eToken share karna strict offense hai.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#78350F;"><div class="m-point-num" style="min-width:24px;height:24px;background:#DBEAFE;color:#1D4ED8;border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;">49</div><div><strong>Data Minimization:</strong> EU data extract na karein.</div></div>
+                        <div class="m-point" style="display:flex; gap:10px; font-size:0.9rem; color:#78350F;"><div class="m-point-num" style="min-width:24px;height:24px;background:#FEF2F2;color:var(--danger);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;">50</div><div><strong style="color:var(--danger);">Privacy Breach:</strong> Unapproved PC par EU data save na karein.</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MOBILE MOCK INTERVIEW -->
+            <h2 style="font-size: 1.4rem; font-weight: 900; margin-top: 2rem; margin-bottom: 5px; color: #0F172A;">Mock Interview</h2>
+            <p style="font-size: 0.85rem; color: #64748B; margin-bottom: 1rem; font-weight: 600;">Swipe & Tap card to reveal answers.</p>
+
+            <div style="display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scroll-snap-type: x mandatory;" class="m-flash-scroll">
+                <div style="min-width: 85vw; background: white; border-radius: 16px; padding: 1.5rem; scroll-snap-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 2px solid var(--purple); display: flex; flex-direction: column; justify-content: center;" onclick="this.style.background='#F0FDF4'; this.style.borderColor='var(--success)'; this.querySelector('.m-tap').style.display='none'; this.querySelector('.m-ans').style.display='block';">
+                    <h4 style="font-size: 1rem; color: var(--purple); font-weight: 800; margin-bottom: 10px; line-height: 1.4;">Q1: What will you do if you find an unknown USB drive in the cafeteria?</h4>
+                    <div class="m-tap" style="color: white; background: var(--purple); font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; align-self: flex-start; font-weight: 800;">Tap to Reveal</div>
+                    <div class="m-ans" style="display: none; margin-top: 15px; color: var(--success); font-weight: 800; font-size: 0.95rem; border-top: 1px dashed #E2E8F0; padding-top: 15px;">✔️ Answer: I will NOT plug it into my computer. Hand it to IT immediately.</div>
+                </div>
+                
+                <div style="min-width: 85vw; background: white; border-radius: 16px; padding: 1.5rem; scroll-snap-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 2px solid var(--purple); display: flex; flex-direction: column; justify-content: center;" onclick="this.style.background='#F0FDF4'; this.style.borderColor='var(--success)'; this.querySelector('.m-tap').style.display='none'; this.querySelector('.m-ans').style.display='block';">
+                    <h4 style="font-size: 1rem; color: var(--purple); font-weight: 800; margin-bottom: 10px; line-height: 1.4;">Q2: Where do you write your passwords?</h4>
+                    <div class="m-tap" style="color: white; background: var(--purple); font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; align-self: flex-start; font-weight: 800;">Tap to Reveal</div>
+                    <div class="m-ans" style="display: none; margin-top: 15px; color: var(--success); font-weight: 800; font-size: 0.95rem; border-top: 1px dashed #E2E8F0; padding-top: 15px;">✔️ Answer: I do not write them anywhere. I memorize them and use MFA.</div>
+                </div>
+
+                <div style="min-width: 85vw; background: white; border-radius: 16px; padding: 1.5rem; scroll-snap-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 2px solid var(--purple); display: flex; flex-direction: column; justify-content: center;" onclick="this.style.background='#F0FDF4'; this.style.borderColor='var(--success)'; this.querySelector('.m-tap').style.display='none'; this.querySelector('.m-ans').style.display='block';">
+                    <h4 style="font-size: 1rem; color: var(--purple); font-weight: 800; margin-bottom: 10px; line-height: 1.4;">Q3: How do you login to GDP-207?</h4>
+                    <div class="m-tap" style="color: white; background: var(--purple); font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; align-self: flex-start; font-weight: 800;">Tap to Reveal</div>
+                    <div class="m-ans" style="display: none; margin-top: 15px; color: var(--success); font-weight: 800; font-size: 0.95rem; border-top: 1px dashed #E2E8F0; padding-top: 15px;">✔️ Answer: Using approved URL and personal eToken (OTP), which I never share.</div>
+                </div>
+            </div>
+
+            <!-- MOBILE CONCLUSION & CHECKLIST -->
+            <div style="background: white; border-radius: 16px; padding: 1.5rem; border: 2px solid var(--primary); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.1); margin-top: 1rem;">
+                <h3 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 15px; font-weight: 900;">🚀 Monday Checklist</h3>
+                <div style="display: flex; gap: 10px; margin-bottom: 12px; font-weight: 700; color: #1E293B; font-size: 0.95rem; align-items: flex-start;"><span style="color: var(--success);">✅</span> Clean Desk (No open notebooks)</div>
+                <div style="display: flex; gap: 10px; margin-bottom: 12px; font-weight: 700; color: #1E293B; font-size: 0.95rem; align-items: flex-start;"><span style="color: var(--success);">✅</span> Lock screen when leaving seat</div>
+                <div style="display: flex; gap: 10px; margin-bottom: 12px; font-weight: 700; color: #1E293B; font-size: 0.95rem; align-items: flex-start;"><span style="color: var(--success);">✅</span> Throw away sticky note passwords</div>
+                <div style="display: flex; gap: 10px; margin-bottom: 0; font-weight: 700; color: #1E293B; font-size: 0.95rem; align-items: flex-start;"><span style="color: var(--danger);">✅</span> GDP-207 eToken handled strictly by YOU</div>
+            </div>
+            
+            <p style="text-align: center; color: #94A3B8; font-size: 0.8rem; font-weight: 600; margin-top: 2rem; margin-bottom: 2rem;">Prepared by IT Dept (Vikas Rawat)</p>
+
+        </div>
+    </div>
+
+    <!-- Core Javascript -->
     <script>
-        // Check if the screen is mobile sized
-        var isMobile = window.innerWidth <= 800;
-
-        Reveal.initialize({
-            // If mobile, switch to a portrait aspect ratio (720x1200)
-            // If desktop, stay on your 5:4 aspect ratio (1280x1024)
-            width: isMobile ? 720 : 1280,
-            height: isMobile ? 1200 : 1024,
+        document.addEventListener("DOMContentLoaded", () => {
             
-            // Slightly smaller margin on mobile so text uses more screen space
-            margin: isMobile ? 0.05 : 0.08, 
-            minScale: 0.2,
-            maxScale: 2.0,
+            // ---------------------------------------------------------
+            // DESKTOP LOGIC (Scroll Animations & Keyboard Reveal)
+            // ---------------------------------------------------------
+            if(window.innerWidth > 850) {
+                const animateElements = document.querySelectorAll('.d-animate');
+                const presentation = document.getElementById('d-presentation');
+                const progressBar = document.getElementById('d-progressBar');
+                
+                // Progress Bar
+                presentation.addEventListener('scroll', () => {
+                    const totalScroll = presentation.scrollHeight - presentation.clientHeight;
+                    const scrollPosition = presentation.scrollTop;
+                    const progressPercentage = (scrollPosition / totalScroll) * 100;
+                    progressBar.style.width = progressPercentage + '%';
+                });
 
-            controls: true, 
-            controlsLayout: 'edges', 
-            controlsBackArrows: 'visible',
+                // Trigger CSS animations when cards enter screen
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('d-visible');
+                        } else {
+                            entry.target.classList.remove('d-visible');
+                            // Reset answers when slide goes out of view
+                            if(entry.target.classList.contains('d-qa-card')) {
+                                entry.target.classList.remove('d-revealed');
+                            }
+                        }
+                    });
+                }, { threshold: 0.1 });
 
-            progress: true,
-            center: true,
-            hash: true,
-            
-            transition: 'slide', 
-            transitionSpeed: 'default', 
-            backgroundTransition: 'fade', 
-            
-            slideNumber: 'c/t'
+                animateElements.forEach(el => observer.observe(el));
+
+                // KEYBOARD 'DOWN ARROW' TO REVEAL MOCK INTERVIEW ANSWERS
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.keyCode === 40) {
+                        const mockSlide = document.getElementById('slide-mock');
+                        if (mockSlide) {
+                            // Check if Mock slide is currently on screen
+                            const rect = mockSlide.getBoundingClientRect();
+                            const isInView = (rect.top >= -100 && rect.bottom <= window.innerHeight + 100);
+                            
+                            if (isInView) {
+                                const unrevealedCards = mockSlide.querySelectorAll('.d-qa-card:not(.d-revealed)');
+                                if (unrevealedCards.length > 0) {
+                                    // Stop page scrolling down
+                                    e.preventDefault(); 
+                                    // Reveal one card at a time
+                                    unrevealedCards[0].classList.add('d-revealed');
+                                }
+                                // If all revealed, let it scroll normally to the last slide
+                            }
+                        }
+                    }
+                });
+            }
         });
+
+        // ---------------------------------------------------------
+        // MOBILE LOGIC (Accordion)
+        // ---------------------------------------------------------
+        function toggleAccordion(headerElement) {
+            const item = headerElement.parentElement;
+            const body = item.querySelector('.m-accordion-body');
+            const isActive = item.classList.contains('active');
+            
+            // Auto close other open tabs for cleaner feed
+            document.querySelectorAll('.m-accordion-item.active').forEach(openItem => {
+                openItem.classList.remove('active');
+                openItem.querySelector('.m-accordion-body').style.maxHeight = "0px";
+            });
+
+            if (!isActive) {
+                item.classList.add('active');
+                body.style.maxHeight = body.scrollHeight + "px"; // Expand dynamically
+            }
+        }
     </script>
 </body>
 </html>
